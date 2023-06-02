@@ -18,7 +18,6 @@ class STTabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         viewControllers = tabs.map { $0.makeViewController() }
 
         trolleyTabBarItem = viewControllers?[2].tabBarItem
@@ -40,6 +39,16 @@ class STTabBarViewController: UITabBarController {
         StorageManager.shared.fetchOrders()
         
         delegate = self
+        
+        buttonSetting()
+    }
+    
+    func buttonSetting() {
+        let xPoint = ((view.frame.width) / 60) * 26.2
+        let yPoint = ((view.frame.height) / 40) * 34.5
+        let floatingButton = FloatingButton(frame: CGRect(x: xPoint, y: yPoint, width: 45, height: 45))
+        floatingButton.addTarget(self, action: #selector(sellerMode), for: .touchUpInside)
+        self.view.addSubview(floatingButton)
     }
 }
 
@@ -118,6 +127,31 @@ extension STTabBarViewController: UITabBarControllerDelegate {
             return false
         } else {
             return true
+        }
+    }
+    
+    @objc func sellerMode() {
+        // 點擊時要判斷是否有 token 如果有則是跳出 Alert 不然就是跳出 FB 登入
+        if KeyChainManager.shared.token == nil {
+            if let authVC = UIStoryboard.auth.instantiateInitialViewController() {
+                authVC.modalPresentationStyle = .overCurrentContext
+                present(authVC, animated: false, completion: nil)
+            }
+        } else {
+            let alert = UIAlertController(title: "進入我的賣場", message: nil, preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "返回", style: .cancel) { _ in
+                alert.dismiss(animated: true)
+            }
+            
+            let confirmAction = UIAlertAction(title: "確定", style: .default) { _ in
+                print("進入商品頁")
+            }
+            
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+            
+            present(alert, animated: true, completion: nil)
         }
     }
 }

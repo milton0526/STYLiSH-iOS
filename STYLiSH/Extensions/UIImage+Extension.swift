@@ -11,6 +11,10 @@ import UIKit
 // swiftlint:disable identifier_name
 enum ImageAsset: String {
 
+    // Floating button
+    case Image_36px_Floating
+    case Image_24px_Floating
+    
     // Profile tab - Tab
     case Icons_36px_Home_Normal
     case Icons_36px_Home_Selected
