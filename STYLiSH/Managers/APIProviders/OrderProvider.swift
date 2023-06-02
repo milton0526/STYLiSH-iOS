@@ -10,6 +10,7 @@ class OrderProvider {
 
     enum OrderInfo {
         case products
+
         case reciever
         case paymentInfo
         

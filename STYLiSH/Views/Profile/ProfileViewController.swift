@@ -151,4 +151,12 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         return CGSize(width: UIScreen.width, height: 48.0)
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let historyVC = HistoryViewController()
+        navigationController?.pushViewController(historyVC, animated: true)
+
+        // Show history view controller
+    }
 }
