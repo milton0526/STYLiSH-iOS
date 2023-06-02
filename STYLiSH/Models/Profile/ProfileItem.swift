@@ -66,6 +66,7 @@ enum ServiceItem: ProfileItem {
     case systomReport
     case bindPhone
     case setting
+    case history
 
     var image: UIImage? {
         switch self {
@@ -77,6 +78,7 @@ enum ServiceItem: ProfileItem {
         case .systomReport: return .asset(.Icons_24px_SystemFeedback)
         case .bindPhone: return .asset(.Icons_24px_RegisterCellphone)
         case .setting: return .asset(.Icons_24px_Settings)
+        case .history: return .asset(.icons_activity_history)
         }
     }
 
@@ -90,6 +92,7 @@ enum ServiceItem: ProfileItem {
         case .systomReport: return NSLocalizedString("系統回饋")
         case .bindPhone: return NSLocalizedString("手機綁定")
         case .setting: return NSLocalizedString("設定")
+        case .history: return NSLocalizedString("購買記錄")
         }
     }
 }

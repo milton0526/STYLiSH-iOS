@@ -38,6 +38,7 @@ enum ImageAsset: String {
     case Icons_24px_SystemFeedback
     case Icons_24px_RegisterCellphone
     case Icons_24px_Settings
+    case icons_activity_history
 
     // Product page
     case Icons_24px_CollectionView
