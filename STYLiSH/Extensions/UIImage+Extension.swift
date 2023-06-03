@@ -11,10 +11,6 @@ import UIKit
 // swiftlint:disable identifier_name
 enum ImageAsset: String {
 
-    // Floating button
-    case Image_36px_Floating
-    case Image_24px_Floating
-    
     // Profile tab - Tab
     case Icons_36px_Home_Normal
     case Icons_36px_Home_Selected
@@ -42,6 +38,7 @@ enum ImageAsset: String {
     case Icons_24px_SystemFeedback
     case Icons_24px_RegisterCellphone
     case Icons_24px_Settings
+    case icons_activity_history
 
     // Product page
     case Icons_24px_CollectionView
@@ -58,6 +55,11 @@ enum ImageAsset: String {
     
     // Drop down
     case Icons_24px_DropDown
+
+    // Close button
+    case Icons_24px_Close
+    
+    case Image_24px_Floating
 }
 // swiftlint:enable identifier_name
 

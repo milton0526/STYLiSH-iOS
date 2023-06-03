@@ -124,6 +124,13 @@
 		3CED80AF2301301300B7DA8E /* Trolley.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CED80B12301301300B7DA8E /* Trolley.storyboard */; };
 		3CFAC67322EEF71C00785FAB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFAC67222EEF71C00785FAB /* String+Extension.swift */; };
 		58A77AA0262F3CC800B88679 /* LSColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A77A9F262F3CC800B88679 /* LSColor+Extension.swift */; };
+		915790C52A2B137A00CFD37E /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790C12A2B137900CFD37E /* HistoryTableViewCell.swift */; };
+		915790C62A2B137A00CFD37E /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790C22A2B137900CFD37E /* HistoryViewController.swift */; };
+		915790D22A2B139600CFD37E /* SelectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CB2A2B139600CFD37E /* SelectionViewDataSource.swift */; };
+		915790D32A2B139600CFD37E /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CC2A2B139600CFD37E /* SelectionView.swift */; };
+		915790D42A2B139600CFD37E /* SelectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CD2A2B139600CFD37E /* SelectionViewDelegate.swift */; };
+		915790D62A2B139600CFD37E /* SellerProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CF2A2B139600CFD37E /* SellerProductViewController.swift */; };
+		915790D82A2B13A400CFD37E /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */; };
 		9180F5182A29DF33000D91AD /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180F5172A29DF33000D91AD /* FloatingButton.swift */; };
 		D306B883B370DFD3ED8ACD74 /* Pods_STYLiSH.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C2B4AF3EF2ABFF2BB9F7AB /* Pods_STYLiSH.framework */; };
 /* End PBXBuildFile section */
@@ -260,6 +267,13 @@
 		3CFAC67222EEF71C00785FAB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		42C2B4AF3EF2ABFF2BB9F7AB /* Pods_STYLiSH.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STYLiSH.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58A77A9F262F3CC800B88679 /* LSColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LSColor+Extension.swift"; sourceTree = "<group>"; };
+		915790C12A2B137900CFD37E /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		915790C22A2B137900CFD37E /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		915790CB2A2B139600CFD37E /* SelectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewDataSource.swift; sourceTree = "<group>"; };
+		915790CC2A2B139600CFD37E /* SelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
+		915790CD2A2B139600CFD37E /* SelectionViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewDelegate.swift; sourceTree = "<group>"; };
+		915790CF2A2B139600CFD37E /* SellerProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellerProductViewController.swift; sourceTree = "<group>"; };
+		915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
 		9180F5172A29DF33000D91AD /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		E921004E251C9FC3CBC174F5 /* Pods-STYLiSH.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.release.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.release.xcconfig"; sourceTree = "<group>"; };
 		F551E8F447D7C8DC42B53B98 /* Pods-STYLiSH.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.debug.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.debug.xcconfig"; sourceTree = "<group>"; };
@@ -305,6 +319,7 @@
 				3CB80E77222FCCC20095F18C /* Bundle+Extension.swift */,
 				3CFAC67222EEF71C00785FAB /* String+Extension.swift */,
 				58A77A9F262F3CC800B88679 /* LSColor+Extension.swift */,
+				915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -327,6 +342,7 @@
 				3C1ACFE322151F50005583E2 /* ProfileViewController.swift */,
 				3C1ACFE822152D29005583E2 /* ProfileCollectionViewCell.swift */,
 				3C1ACFEA22153114005583E2 /* ProfileCollectionReusableView.swift */,
+				915790C02A2B137900CFD37E /* History */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -712,10 +728,31 @@
 			path = APIProviders;
 			sourceTree = "<group>";
 		};
+		915790C02A2B137900CFD37E /* History */ = {
+			isa = PBXGroup;
+			children = (
+				915790C12A2B137900CFD37E /* HistoryTableViewCell.swift */,
+				915790C22A2B137900CFD37E /* HistoryViewController.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		915790CA2A2B139600CFD37E /* Selection View */ = {
+			isa = PBXGroup;
+			children = (
+				915790CB2A2B139600CFD37E /* SelectionViewDataSource.swift */,
+				915790CC2A2B139600CFD37E /* SelectionView.swift */,
+				915790CD2A2B139600CFD37E /* SelectionViewDelegate.swift */,
+			);
+			path = "Selection View";
+			sourceTree = "<group>";
+		};
 		9180F5162A29DECE000D91AD /* Seller */ = {
 			isa = PBXGroup;
 			children = (
 				9180F5172A29DF33000D91AD /* FloatingButton.swift */,
+				915790CA2A2B139600CFD37E /* Selection View */,
+				915790CF2A2B139600CFD37E /* SellerProductViewController.swift */,
 			);
 			path = Seller;
 			sourceTree = "<group>";
@@ -923,19 +960,24 @@
 				3C4B10E222292EBB009942B7 /* STTapPayViewController.swift in Sources */,
 				3C831C8A22EAAF7A00112298 /* STPaymentInfoTableViewCell.swift in Sources */,
 				3C990F6C22E5C78200F2FCEA /* ProductDetailView.swift in Sources */,
+				915790C52A2B137A00CFD37E /* HistoryTableViewCell.swift in Sources */,
+				915790C62A2B137A00CFD37E /* HistoryViewController.swift in Sources */,
 				3C546BE722EAC79D0082C655 /* STOrderHeaderView.swift in Sources */,
 				3C5DD7CC2227EFFF0053B67A /* TrolleyViewController.swift in Sources */,
 				3C6020EA222BC00100312958 /* UILabel+Extension.swift in Sources */,
+				915790D42A2B139600CFD37E /* SelectionViewDelegate.swift in Sources */,
 				3CB80E76222FCBE60095F18C /* STConstant.swift in Sources */,
 				9180F5182A29DF33000D91AD /* FloatingButton.swift in Sources */,
 				3C1ACFE422151F50005583E2 /* ProfileViewController.swift in Sources */,
 				3C34794C222E82F600969C30 /* AmountSelectionCell.swift in Sources */,
 				3C75FD0F22F1767D0068FEA5 /* CheckoutResultViewController.swift in Sources */,
 				3CE7A51C223089C3009FF003 /* OrderProvider.swift in Sources */,
+				915790D32A2B139600CFD37E /* SelectionView.swift in Sources */,
 				3C0DD87A221350B300F5237E /* UIColor+Extension.swift in Sources */,
 				3CC706162216B34800CAD850 /* ProductTableViewCell.swift in Sources */,
 				3CEBE077222F718D0064EF82 /* StorageManager.swift in Sources */,
 				3C09F51C22114A0100C5B3E2 /* STTabBarViewController.swift in Sources */,
+				915790D62A2B139600CFD37E /* SellerProductViewController.swift in Sources */,
 				3C7036D1222C4E0A00F6C58B /* ProductPickerController.swift in Sources */,
 				3CC7061A2216B36800CAD850 /* ProductCollectionViewCell.swift in Sources */,
 				3CED4C0F2214222A00121D4B /* STParser.swift in Sources */,
@@ -953,6 +995,7 @@
 				3CE7A51522305E5A009FF003 /* KeyChainManager.swift in Sources */,
 				3C1ACFEB22153114005583E2 /* ProfileCollectionReusableView.swift in Sources */,
 				3C9C0D532215400900595689 /* ProfileItem.swift in Sources */,
+				915790D22A2B139600CFD37E /* SelectionViewDataSource.swift in Sources */,
 				3C9EF5362213C97D00DEE152 /* MarketRequest.swift in Sources */,
 				3CB801252229AEE30029A552 /* UITableView+Extension.swift in Sources */,
 				3CDC5A6A222D860B0071D0D1 /* SizeSelectionCell.swift in Sources */,
@@ -977,6 +1020,7 @@
 				3C6020E6222BB03400312958 /* STBaseViewController.swift in Sources */,
 				3CEBE07E222F979F0064EF82 /* JGProgressHUDWrapper.swift in Sources */,
 				3CCB3BC6222AAC8300976A1C /* LKGalleryView.swift in Sources */,
+				915790D82A2B13A400CFD37E /* UIStackView+Extension.swift in Sources */,
 				3C9C0D552215443900595689 /* ProfileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

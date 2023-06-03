@@ -33,7 +33,8 @@ class ProfileManager {
             ServiceItem.customService,
             ServiceItem.systomReport,
             ServiceItem.bindPhone,
-            ServiceItem.setting
+            ServiceItem.setting,
+            ServiceItem.history
         ]
     )
 
