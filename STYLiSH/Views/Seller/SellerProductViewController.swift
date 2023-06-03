@@ -30,6 +30,18 @@ class SellerProductViewController: UIViewController {
         return collectionView
     }()
 
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isHidden = true
+        tableView.allowsSelection = false
+        tableView.register(
+            UINib(nibName: "SecondUploadCell", bundle: nil),
+            forCellReuseIdentifier: SecondUploadCell.identifier)
+        return tableView
+    }()
+
     private var sellerProducts: [Product] = []
 
     override func viewDidLoad() {
@@ -44,8 +56,10 @@ class SellerProductViewController: UIViewController {
     private func setupViews() {
         view.addSubview(selectionView)
         view.addSubview(collectionView)
+        view.addSubview(tableView)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             selectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -55,7 +69,12 @@ class SellerProductViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            tableView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
@@ -86,8 +105,18 @@ extension SellerProductViewController: SelectionViewDataSource {
 
 // MARK: - Selection view delegate
 extension SellerProductViewController: SelectionViewDelegate {
+    func shouldSelectedButton(_ selectionView: SelectionView, at index: Int) -> Bool {
+        return true
+    }
+
     func didSelectedButton(_ selectionView: SelectionView, at index: Int) {
-        // Change view base on index
+        if index == 1 {
+            collectionView.isHidden = true
+            tableView.isHidden = false
+        } else {
+            collectionView.isHidden = false
+            tableView.isHidden = true
+        }
     }
 }
 
@@ -144,4 +173,24 @@ extension SellerProductViewController: UICollectionViewDataSource {
         //cell.layoutCell(image: <#T##String#>, title: <#T##String#>, price: <#T##Int#>)
         return cell
     }
+}
+
+// MARK: - UITable view dataSource
+extension SellerProductViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SecondUploadCell.identifier, for: indexPath) as? SecondUploadCell else {
+            fatalError("Failed to dequeue cell.")
+        }
+
+        return cell
+    }
+}
+
+// MARK: UITable view delegate
+extension SellerProductViewController: UITableViewDelegate {
+
 }
