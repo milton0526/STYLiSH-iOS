@@ -144,8 +144,11 @@ extension STTabBarViewController: UITabBarControllerDelegate {
                 alert.dismiss(animated: true)
             }
             
-            let confirmAction = UIAlertAction(title: "確定", style: .default) { _ in
-                print("進入商品頁")
+            let confirmAction = UIAlertAction(title: "確定", style: .default) { [weak self]_ in
+                let sellerVC = SellerProductViewController()
+                let navVC = UINavigationController(rootViewController: sellerVC)
+                navVC.modalPresentationStyle = .fullScreen
+                self?.present(navVC, animated: true)
             }
             
             alert.addAction(cancelAction)

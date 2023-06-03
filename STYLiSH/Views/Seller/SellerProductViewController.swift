@@ -20,7 +20,7 @@ class SellerProductViewController: UIViewController {
     let buttonTitles = [NSLocalizedString("我的商品"), NSLocalizedString("我要上架")]
 
     lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.lk_registerCellWithNib(
@@ -34,7 +34,7 @@ class SellerProductViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .white
         title = NSLocalizedString("賣家中心")
         setupCloseButton()
         setupViews()
