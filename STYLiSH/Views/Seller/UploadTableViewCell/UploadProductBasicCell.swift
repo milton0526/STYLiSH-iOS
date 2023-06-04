@@ -22,6 +22,19 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     let uploadImageView1 = UIImageView()
     let uploadImageView2 = UIImageView()
     let uploadImageView3 = UIImageView()
+    
+    let productTitleLabel = UILabel()
+    let productTitleTextField = UITextField()
+    
+    let productDescriptionLabel = UILabel()
+    let productDescriptionTextField = UITextField()
+    
+    let categoryTitleLabel = UILabel()
+    let categorySelectorStackView = UIStackView(arrangedSubviews: [])
+    let womenButton = UIButton()
+    let accessoriesButton = UIButton()
+    let menButton = UIButton()
+    
     weak var delegate: UploadProductBasicCellDelegate?
     
     var selectedViewIndex: Int?
@@ -38,15 +51,28 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     }
     
     func setupView() {
-        [uploadImageLabel, imagesScrollView].forEach { contentView.addSubview( $0 ) }
-        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { imagesScrollView.addSubview( $0 ) }
+        let imageFrameItems = [uploadImageLabel, imagesScrollView]
+        let imageItems = [uploadImageView1, uploadImageView2, uploadImageView3]
+        let productTitleItems = [productTitleLabel, productTitleTextField]
+        let productDescriptionItems = [productDescriptionLabel, productDescriptionTextField]
+        let categoryFrameItems = [categoryTitleLabel, categorySelectorStackView]
+        let categoryItems = [womenButton, menButton, accessoriesButton]
+        categoryItems.forEach { categorySelectorStackView.addSubview($0) }
+        categorySelectorStackView.axis = .horizontal
+        
+        imageFrameItems.forEach { contentView.addSubview( $0 ) }
+        imageItems.forEach { imagesScrollView.addSubview( $0 ) }
+        productTitleItems.forEach { contentView.addSubview( $0 ) }
+        productDescriptionItems.forEach { contentView.addSubview( $0 ) }
+        categoryFrameItems.forEach { contentView.addSubview( $0 ) }
+        categoryItems.forEach { categorySelectorStackView.addArrangedSubview( $0 ) }
         
         let opacity = "MB"
-        let labelText = "圖片 (最多兩張圖片、容量限制 2 \(opacity))"
+        let imageTitle = "圖片 (最多兩張圖片、容量限制 2 \(opacity))"
         let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.kern: 2.25]
-        let attributedText = NSMutableAttributedString(string: labelText, attributes: attributes)
+        let imageAttributedText = NSMutableAttributedString(string: imageTitle, attributes: attributes)
         
-        uploadImageLabel.attributedText = attributedText
+        uploadImageLabel.attributedText = imageAttributedText
         uploadImageLabel.font = UIFont(name: "PingFang TC", size: 14)
         uploadImageLabel.textColor = UIColor.B2
         
@@ -60,30 +86,74 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         // Add the tap gesture recognizers to the image views
         uploadImageView1.addGestureRecognizer(tapGestureRecognizer1)
         uploadImageView1.tag = 0
-        uploadImageView1.contentMode = .scaleAspectFill
-        uploadImageView1.clipsToBounds = true
         uploadImageView2.addGestureRecognizer(tapGestureRecognizer2)
         uploadImageView2.tag = 1
-        uploadImageView2.contentMode = .scaleAspectFill
-        uploadImageView2.clipsToBounds = true
         uploadImageView3.addGestureRecognizer(tapGestureRecognizer3)
         uploadImageView3.tag = 2
-        uploadImageView3.contentMode = .scaleAspectFill
-        uploadImageView3.clipsToBounds = true
         
-        // Enable user interaction for the image views
-        uploadImageView1.isUserInteractionEnabled = true
-        uploadImageView2.isUserInteractionEnabled = true
-        uploadImageView3.isUserInteractionEnabled = true
-        
+        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.contentMode = .scaleAspectFill }
+        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.clipsToBounds = true }
+        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.isUserInteractionEnabled = true }
         [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.image = UIImage.asset(.Image_Placeholder) }
-//        [uploadImageView1, uploadImageView2].forEach { $0.addGestureRecognizer(tap) }
-//        [uploadImageView1, uploadImageView2].forEach { $0.isUserInteractionEnabled = true }
+        
+        let productTitle = "名稱"
+        let productAttributedText = NSMutableAttributedString(string: productTitle, attributes: attributes)
+        
+        productTitleLabel.attributedText = productAttributedText
+        productTitleLabel.font = UIFont(name: "PingFang TC", size: 14)
+        productTitleLabel.textColor = UIColor.B2
+        
+        productTitleTextField.backgroundColor = UIColor(hex: "EBEBEB")
+        
+        let descriptionTitle = "描述"
+        let descriptionAttributedText = NSMutableAttributedString(string: descriptionTitle, attributes: attributes)
+        
+        productDescriptionLabel.attributedText = descriptionAttributedText
+        productDescriptionLabel.font = UIFont(name: "PingFang TC", size: 14)
+        productDescriptionLabel.textColor = UIColor.B2
+        
+        productDescriptionTextField.backgroundColor = UIColor(hex: "EBEBEB")
+        
+        categorySelectorStackView.layer.borderWidth = 1
+        categorySelectorStackView.layer.borderColor = UIColor(hex: "3F3A3A").cgColor
+        
+        womenButton.setAttributedTitle(NSMutableAttributedString(string: "女裝", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
+        womenButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+        womenButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 14)
+        womenButton.addTarget(self, action: #selector(womenButtonAction), for: .touchUpInside)
+        womenButton.tag = 0
+        womenButton.backgroundColor = UIColor(hex: "3F3A3A")
+        womenButton.layer.borderWidth = 0.5
+        womenButton.layer.borderColor = UIColor(hex: "3F3A3A").cgColor
+        
+        accessoriesButton.setAttributedTitle(NSMutableAttributedString(string: "配件", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
+        accessoriesButton.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal)
+        accessoriesButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 14)
+        accessoriesButton.addTarget(self, action: #selector(accessoriesButtonAction), for: .touchUpInside)
+        accessoriesButton.tag = 1
+        accessoriesButton.layer.borderWidth = 0.5
+        accessoriesButton.layer.borderColor = UIColor(hex: "3F3A3A").cgColor
+        
+        menButton.setAttributedTitle(NSMutableAttributedString(string: "男裝", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
+        menButton.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal)
+        menButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 14)
+        menButton.addTarget(self, action: #selector(menButtonAction), for: .touchUpInside)
+        menButton.tag = 2
+        menButton.layer.borderWidth = 0.5
+        menButton.layer.borderColor = UIColor(hex: "3F3A3A").cgColor
     }
     
     func setupConstraints() {
-        let items = [uploadImageLabel, imagesScrollView, uploadImageView1, uploadImageView2, uploadImageView3]
-        items.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        let imageItems = [uploadImageLabel, imagesScrollView, uploadImageView1, uploadImageView2, uploadImageView3]
+        let productTitleItems = [productTitleLabel, productTitleTextField]
+        let productDescriptionItems = [productDescriptionLabel, productDescriptionTextField]
+        let categoryFrameItems = [categoryTitleLabel, categorySelectorStackView, womenButton, menButton, accessoriesButton]
+        let categoryItems = [womenButton, menButton, accessoriesButton]
+        imageItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        productTitleItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        productDescriptionItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        categoryFrameItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        categoryItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
             uploadImageLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
@@ -93,7 +163,6 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
             imagesScrollView.topAnchor.constraint(equalTo: uploadImageLabel.bottomAnchor, constant: 4),
             imagesScrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imagesScrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imagesScrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             imagesScrollView.heightAnchor.constraint(equalToConstant: 317),
             
             uploadImageView1.topAnchor.constraint(equalTo: imagesScrollView.topAnchor),
@@ -113,7 +182,38 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
             uploadImageView3.trailingAnchor.constraint(equalTo: imagesScrollView.trailingAnchor, constant: -15),
             uploadImageView3.bottomAnchor.constraint(equalTo: imagesScrollView.bottomAnchor),
             uploadImageView3.widthAnchor.constraint(equalToConstant: 237),
-            uploadImageView3.heightAnchor.constraint(equalToConstant: 317)
+            uploadImageView3.heightAnchor.constraint(equalToConstant: 317),
+            
+            productTitleLabel.topAnchor.constraint(equalTo: imagesScrollView.bottomAnchor, constant: 16),
+            productTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            productTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            productTitleTextField.topAnchor.constraint(equalTo: productTitleLabel.bottomAnchor, constant: 4),
+            productTitleTextField.leadingAnchor.constraint(equalTo: productTitleLabel.leadingAnchor),
+            productTitleTextField.trailingAnchor.constraint(equalTo: productTitleLabel.trailingAnchor),
+            productTitleTextField.heightAnchor.constraint(equalToConstant: 56),
+//            productTitleTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            
+            productDescriptionLabel.topAnchor.constraint(equalTo: productTitleTextField.bottomAnchor, constant: 16),
+            productDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            productDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            productDescriptionTextField.topAnchor.constraint(equalTo: productDescriptionLabel.bottomAnchor, constant: 4),
+            productDescriptionTextField.leadingAnchor.constraint(equalTo: productDescriptionLabel.leadingAnchor),
+            productDescriptionTextField.trailingAnchor.constraint(equalTo: productDescriptionLabel.trailingAnchor),
+            productDescriptionTextField.heightAnchor.constraint(equalToConstant: 178),
+            
+            categorySelectorStackView.topAnchor.constraint(equalTo: productDescriptionTextField.bottomAnchor, constant: 16),
+            categorySelectorStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            categorySelectorStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            categorySelectorStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            
+            womenButton.widthAnchor.constraint(equalToConstant: 115),
+            womenButton.heightAnchor.constraint(equalToConstant: 44),
+            accessoriesButton.widthAnchor.constraint(equalToConstant: 115),
+            accessoriesButton.heightAnchor.constraint(equalToConstant: 44),
+            menButton.widthAnchor.constraint(equalToConstant: 115),
+            menButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
     
@@ -130,6 +230,27 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     
     func showCamera() {
         delegate?.presentCamera(from: self)
+    }
+    
+    @objc func womenButtonAction() {
+        [accessoriesButton, menButton].forEach { $0.backgroundColor = UIColor(hex: "FFFFFF") }
+        [accessoriesButton, menButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
+        womenButton.backgroundColor = UIColor(hex: "3F3A3A")
+        womenButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+    }
+    
+    @objc func accessoriesButtonAction() {
+        [womenButton, menButton].forEach { $0.backgroundColor = UIColor(hex: "FFFFFF") }
+        [womenButton, menButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
+        accessoriesButton.backgroundColor = UIColor(hex: "3F3A3A")
+        accessoriesButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+    }
+    
+    @objc func menButtonAction() {
+        [accessoriesButton, womenButton].forEach { $0.backgroundColor = UIColor(hex: "FFFFFF") }
+        [accessoriesButton, womenButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
+        menButton.backgroundColor = UIColor(hex: "3F3A3A")
+        menButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
     }
 }
 
