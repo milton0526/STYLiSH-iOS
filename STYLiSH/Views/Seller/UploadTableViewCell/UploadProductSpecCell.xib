@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="63" id="KGk-i7-Jjw" customClass="UploadProductSpecCell" customModule="STYLiSH" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="M0Q-jH-WV5">
+                        <rect key="frame" x="16" y="0.0" width="288" height="47"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5C-Tp-2Kf">
+                                <rect key="frame" x="0.0" y="0.0" width="85.333333333333329" height="47"/>
+                                <color key="backgroundColor" systemColor="systemIndigoColor"/>
+                            </view>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="尺寸" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SRC-bg-zYf">
+                                <rect key="frame" x="101.33333333333334" y="0.0" width="85.333333333333343" height="47"/>
+                                <color key="backgroundColor" name="B6"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="KGk-i7-Jjw" id="6eF-q2-Cai"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="數量" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bLH-eJ-6lt">
+                                <rect key="frame" x="202.66666666666666" y="0.0" width="85.333333333333343" height="47"/>
+                                <color key="backgroundColor" name="B6"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="KGk-i7-Jjw" id="9vS-NJ-WCN"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="M0Q-jH-WV5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="B4Q-EW-rYw"/>
+                    <constraint firstAttribute="trailing" secondItem="M0Q-jH-WV5" secondAttribute="trailing" constant="16" id="JPv-WG-kab"/>
+                    <constraint firstItem="M0Q-jH-WV5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Xa7-AD-kc2"/>
+                    <constraint firstAttribute="bottom" secondItem="M0Q-jH-WV5" secondAttribute="bottom" constant="16" id="uSg-rw-3uh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="amountTextField" destination="bLH-eJ-6lt" id="6e3-wV-sxw"/>
+                <outlet property="colorView" destination="M5C-Tp-2Kf" id="JNP-DP-c6X"/>
+                <outlet property="sizeTextField" destination="SRC-bg-zYf" id="QhK-YI-UdA"/>
+            </connections>
+            <point key="canvasLocation" x="127" y="21"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="SRC-bg-zYf">
+            <size key="intrinsicContentSize" width="56.666666666666664" height="34"/>
+        </designable>
+        <designable name="bLH-eJ-6lt">
+            <size key="intrinsicContentSize" width="56.666666666666664" height="34"/>
+        </designable>
+    </designables>
+    <resources>
+        <namedColor name="B6">
+            <color red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

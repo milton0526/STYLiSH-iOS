@@ -134,6 +134,8 @@
 		9180F5182A29DF33000D91AD /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180F5172A29DF33000D91AD /* FloatingButton.swift */; };
 		C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */; };
 		C4B4A5B92A2C573A00CD4C65 /* UploadProductDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */; };
+		C4B4A5BC2A2C5C7000CD4C65 /* UploadProductSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */; };
+		C4B4A5BD2A2C5C7000CD4C65 /* UploadProductSpecCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B4A5BB2A2C5C7000CD4C65 /* UploadProductSpecCell.xib */; };
 		D306B883B370DFD3ED8ACD74 /* Pods_STYLiSH.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C2B4AF3EF2ABFF2BB9F7AB /* Pods_STYLiSH.framework */; };
 /* End PBXBuildFile section */
 
@@ -279,6 +281,8 @@
 		9180F5172A29DF33000D91AD /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductDetailCell.swift; sourceTree = "<group>"; };
 		C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadProductDetailCell.xib; sourceTree = "<group>"; };
+		C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductSpecCell.swift; sourceTree = "<group>"; };
+		C4B4A5BB2A2C5C7000CD4C65 /* UploadProductSpecCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadProductSpecCell.xib; sourceTree = "<group>"; };
 		E921004E251C9FC3CBC174F5 /* Pods-STYLiSH.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.release.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.release.xcconfig"; sourceTree = "<group>"; };
 		F551E8F447D7C8DC42B53B98 /* Pods-STYLiSH.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.debug.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -767,6 +771,8 @@
 			children = (
 				C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */,
 				C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */,
+				C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */,
+				C4B4A5BB2A2C5C7000CD4C65 /* UploadProductSpecCell.xib */,
 			);
 			path = UploadTableViewCell;
 			sourceTree = "<group>";
@@ -869,6 +875,7 @@
 				3C09F5122211435B00C5B3E2 /* Lobby.storyboard in Resources */,
 				3CED80AF2301301300B7DA8E /* Trolley.storyboard in Resources */,
 				3C4B10D322292732009942B7 /* card_jcb@3x.png in Resources */,
+				C4B4A5BD2A2C5C7000CD4C65 /* UploadProductSpecCell.xib in Resources */,
 				3C4B10D122292732009942B7 /* card_mastercard.png in Resources */,
 				3C34794D222E82F600969C30 /* AmountSelectionCell.xib in Resources */,
 				3C4B10D422292732009942B7 /* card_jcb@2x.png in Resources */,
@@ -1022,6 +1029,7 @@
 				3C33690E2226F53E008A5A7A /* TrolleyTableViewCell.swift in Sources */,
 				3CC706122216955900CAD850 /* STBaseNavigationController.swift in Sources */,
 				3C8F191922E5997B00EECE90 /* LobbyTableViewHeaderView.swift in Sources */,
+				C4B4A5BC2A2C5C7000CD4C65 /* UploadProductSpecCell.swift in Sources */,
 				3CE7A517223061A9009FF003 /* UserRequest.swift in Sources */,
 				3C09F52122115AB700C5B3E2 /* UIImage+Extension.swift in Sources */,
 				3C6B8FE8222CE53100804EFE /* BasicSelectionCell.swift in Sources */,

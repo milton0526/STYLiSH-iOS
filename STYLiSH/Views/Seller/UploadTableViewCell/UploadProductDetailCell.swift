@@ -8,12 +8,12 @@
 
 import UIKit
 
-class UploadProductDetailCell: UITableViewCell {
+struct PickerModel {
+    let title: String
+    let data: [String]
+}
 
-    struct PickerModel {
-        let title: String
-        let data: [String]
-    }
+class UploadProductDetailCell: UITableViewCell {
 
     @IBOutlet weak var textureTextField: STOrderUserInputTextField! {
         didSet {

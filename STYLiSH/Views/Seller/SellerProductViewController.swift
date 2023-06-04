@@ -36,14 +36,17 @@ class SellerProductViewController: UIViewController {
         tableView.dataSource = self
         tableView.isHidden = true
         tableView.allowsSelection = false
+        tableView.separatorStyle = .none
         tableView.register(
-            UINib(nibName: "UploadProductDetailCell", bundle: nil),
+            UINib(nibName: String(describing: UploadProductDetailCell.self), bundle: nil),
             forCellReuseIdentifier: UploadProductDetailCell.identifier)
+        tableView.register(
+            UINib(nibName: String(describing: UploadProductSpecCell.self), bundle: nil),
+            forCellReuseIdentifier: UploadProductSpecCell.identifier)
         return tableView
     }()
 
     private var sellerProducts: [Product] = []
-    private var productColor: UIColor?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +93,14 @@ class SellerProductViewController: UIViewController {
 
     @objc private func didClickCloseButton(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
+    }
+
+    @available(iOS 14.0, *)
+    private func showColorPikerView() {
+        let colorPickerView = UIColorPickerViewController()
+        colorPickerView.supportsAlpha = false
+        colorPickerView.delegate = self
+        present(colorPickerView, animated: true)
     }
 }
 
@@ -178,20 +189,58 @@ extension SellerProductViewController: UICollectionViewDataSource {
 
 // MARK: - UITable view dataSource
 extension SellerProductViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: UploadProductDetailCell.identifier, for: indexPath) as? UploadProductDetailCell else {
+        guard let detailCell = tableView.dequeueReusableCell(
+            withIdentifier: UploadProductDetailCell.identifier,
+            for: indexPath) as? UploadProductDetailCell
+        else {
             fatalError("Failed to dequeue cell.")
         }
 
-        return cell
+        guard let specCell = tableView.dequeueReusableCell(
+            withIdentifier: UploadProductSpecCell.identifier,
+            for: indexPath) as? UploadProductSpecCell
+        else {
+            fatalError("Failed to dequeue cell.")
+        }
+
+        switch indexPath.section {
+        case 0:
+            return detailCell
+        case 1:
+            specCell.chooseColorHandler = { [weak self] in
+                if #available(iOS 14.0, *) {
+                    self?.showColorPikerView()
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
+            return specCell
+        default:
+            return UITableViewCell()
+        }
+
     }
 }
 
 // MARK: UITable view delegate
 extension SellerProductViewController: UITableViewDelegate {
 
+}
+
+// MARK: - ColorPickerView Delegate
+extension SellerProductViewController: UIColorPickerViewControllerDelegate {
+    @available(iOS 14.0, *)
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        let color = viewController.selectedColor
+        NotificationCenter.default.post(name: .updateColorView, object: color)
+    }
 }
