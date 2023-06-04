@@ -14,6 +14,8 @@ class UploadProductSpecCell: UITableViewCell {
         didSet {
             colorView.layer.cornerRadius = 10
             colorView.layer.masksToBounds = true
+            colorView.layer.borderWidth = 1
+            colorView.layer.borderColor = UIColor.systemGray5.cgColor
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeColor))
             colorView.addGestureRecognizer(tapGesture)
         }
