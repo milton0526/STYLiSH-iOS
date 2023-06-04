@@ -228,7 +228,7 @@ extension SellerProductViewController: UITableViewDelegate {
         let headerView = UIView.init(frame: CGRect(x: 0, y: 0, width: 150, height: 20))
         let label = UILabel()
 
-        label.frame = CGRect.init(x: 16, y: 0, width: headerView.frame.width, height: headerView.frame.height)
+        label.frame = CGRect.init(x: 16, y: 8, width: headerView.frame.width, height: headerView.frame.height)
         label.backgroundColor = .white
 
         label.textColor = UIColor(hex: "3F3A3A")
@@ -238,7 +238,7 @@ extension SellerProductViewController: UITableViewDelegate {
         } else {
             label.text = "商品規格"
         }
-
+        
         headerView.addSubview(label)
         headerView.backgroundColor = UIColor.white
 
@@ -250,8 +250,10 @@ extension SellerProductViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        tableView.separatorStyle = .none
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "UploadProductBasicCell", for: indexPath) as? UploadProductBasicCell else { fatalError("Could not create TableViewCell") }
         cell.delegate = self
+        
         return cell
     }
 }
