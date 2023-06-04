@@ -132,8 +132,8 @@
 		915790D62A2B139600CFD37E /* SellerProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CF2A2B139600CFD37E /* SellerProductViewController.swift */; };
 		915790D82A2B13A400CFD37E /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */; };
 		9180F5182A29DF33000D91AD /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180F5172A29DF33000D91AD /* FloatingButton.swift */; };
-		C4ADFDD12A2B2B5600DEE9B8 /* SecondUploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ADFDCF2A2B2B5600DEE9B8 /* SecondUploadCell.swift */; };
-		C4ADFDD22A2B2B5600DEE9B8 /* SecondUploadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4ADFDD02A2B2B5600DEE9B8 /* SecondUploadCell.xib */; };
+		C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */; };
+		C4B4A5B92A2C573A00CD4C65 /* UploadProductDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */; };
 		D306B883B370DFD3ED8ACD74 /* Pods_STYLiSH.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C2B4AF3EF2ABFF2BB9F7AB /* Pods_STYLiSH.framework */; };
 /* End PBXBuildFile section */
 
@@ -277,8 +277,8 @@
 		915790CF2A2B139600CFD37E /* SellerProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellerProductViewController.swift; sourceTree = "<group>"; };
 		915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
 		9180F5172A29DF33000D91AD /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
-		C4ADFDCF2A2B2B5600DEE9B8 /* SecondUploadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondUploadCell.swift; sourceTree = "<group>"; };
-		C4ADFDD02A2B2B5600DEE9B8 /* SecondUploadCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecondUploadCell.xib; sourceTree = "<group>"; };
+		C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductDetailCell.swift; sourceTree = "<group>"; };
+		C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadProductDetailCell.xib; sourceTree = "<group>"; };
 		E921004E251C9FC3CBC174F5 /* Pods-STYLiSH.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.release.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.release.xcconfig"; sourceTree = "<group>"; };
 		F551E8F447D7C8DC42B53B98 /* Pods-STYLiSH.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.debug.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -765,8 +765,8 @@
 		C4ADFDCE2A2B2AEF00DEE9B8 /* UploadTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				C4ADFDCF2A2B2B5600DEE9B8 /* SecondUploadCell.swift */,
-				C4ADFDD02A2B2B5600DEE9B8 /* SecondUploadCell.xib */,
+				C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */,
+				C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */,
 			);
 			path = UploadTableViewCell;
 			sourceTree = "<group>";
@@ -873,12 +873,12 @@
 				3C34794D222E82F600969C30 /* AmountSelectionCell.xib in Resources */,
 				3C4B10D422292732009942B7 /* card_jcb@2x.png in Resources */,
 				3C4B10DB22292732009942B7 /* card_mastercard@2x.png in Resources */,
-				C4ADFDD22A2B2B5600DEE9B8 /* SecondUploadCell.xib in Resources */,
 				3CED8086230112C400B7DA8E /* InfoPlist.strings in Resources */,
 				3C4B10CD22292732009942B7 /* card_jcb.png in Resources */,
 				3C33690F2226F53E008A5A7A /* TrolleyTableViewCell.xib in Resources */,
 				3C3369212227DC84008A5A7A /* TrolleySelectionView.xib in Resources */,
 				3C4B10DA22292732009942B7 /* card_visa@3x.png in Resources */,
+				C4B4A5B92A2C573A00CD4C65 /* UploadProductDetailCell.xib in Resources */,
 				3C6020D9222B883600312958 /* ProductDescriptionTableViewCell.xib in Resources */,
 				3C6020E0222B937F00312958 /* ProductDetailColorCell.xib in Resources */,
 				3C831C6522E9AF8F00112298 /* STOrderUserInputCell.xib in Resources */,
@@ -966,7 +966,6 @@
 				3CB801232229A5290029A552 /* MJRefreshWrapper.swift in Sources */,
 				3C546BE522EABB6D0082C655 /* CheckoutViewController.swift in Sources */,
 				3CD2911D221135E2008B8A2D /* AppDelegate.swift in Sources */,
-				C4ADFDD12A2B2B5600DEE9B8 /* SecondUploadCell.swift in Sources */,
 				3CEBE07A222F72600064EF82 /* STYLiSH.xcdatamodeld in Sources */,
 				3CDC5A66222D85990071D0D1 /* ColorSelectionCell.swift in Sources */,
 				3C6020D8222B883600312958 /* ProductDescriptionTableViewCell.swift in Sources */,
@@ -1006,6 +1005,7 @@
 				3CED80AE23012CE400B7DA8E /* NSLocalizedString+Extension.swift in Sources */,
 				3CA25519222A484300B286F6 /* ProductsListProvider.swift in Sources */,
 				3C3369162227CE7D008A5A7A /* TrolleyProductBaseView.swift in Sources */,
+				C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */,
 				3CE7A50222302354009FF003 /* ProductContentCategory.swift in Sources */,
 				3C6020E8222BBA3C00312958 /* ProductBasicCell.swift in Sources */,
 				3CE7A51522305E5A009FF003 /* KeyChainManager.swift in Sources */,

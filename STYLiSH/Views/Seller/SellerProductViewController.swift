@@ -37,12 +37,13 @@ class SellerProductViewController: UIViewController {
         tableView.isHidden = true
         tableView.allowsSelection = false
         tableView.register(
-            UINib(nibName: "SecondUploadCell", bundle: nil),
-            forCellReuseIdentifier: SecondUploadCell.identifier)
+            UINib(nibName: "UploadProductDetailCell", bundle: nil),
+            forCellReuseIdentifier: UploadProductDetailCell.identifier)
         return tableView
     }()
 
     private var sellerProducts: [Product] = []
+    private var productColor: UIColor?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -182,7 +183,7 @@ extension SellerProductViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SecondUploadCell.identifier, for: indexPath) as? SecondUploadCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: UploadProductDetailCell.identifier, for: indexPath) as? UploadProductDetailCell else {
             fatalError("Failed to dequeue cell.")
         }
 
