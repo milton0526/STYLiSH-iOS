@@ -43,21 +43,17 @@ class UploadProductSpecCell: UITableViewCell {
 
     private let sizeData = PickerModel(title: "Size", data: ["S", "M", "L"])
 
-    var chooseColorHandler: (() -> Void)?
+    var chooseColorHandler: ((UITableViewCell) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateColorView), name: .updateColorView, object: nil)
+
     }
 
     @objc private func changeColor(_ gesture: UITapGestureRecognizer) {
-        chooseColorHandler?()
+        chooseColorHandler?(self)
     }
 
-    @objc private func updateColorView(_ notification: Notification) {
-        guard let color = notification.object as? UIColor else { return }
-        colorView.backgroundColor = color
-    }
 }
 
 // MARK: - UITextField Delegate
@@ -90,6 +86,3 @@ extension UploadProductSpecCell: UIPickerViewDataSource {
 
 }
 
-extension Notification.Name {
-    static let updateColorView = Notification.Name("updateColorView")
-}

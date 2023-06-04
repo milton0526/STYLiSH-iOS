@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SellerProductViewController: UIViewController {
+class SellerProductViewController: STBaseViewController {
 
     lazy var selectionView: SelectionView = {
         let selectionView = SelectionView()
@@ -52,6 +52,9 @@ class SellerProductViewController: UIViewController {
     private var sellerProducts: [Product] = []
 
     private var specSectionRows = 1
+
+    private var currentSpecIndexPath: IndexPath?
+    //private var testColorData: [IndexPath: UIColor?] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -214,10 +217,10 @@ extension SellerProductViewController: UITableViewDataSource {
             }
 
             headerView.handler = { [weak self] in
-                self?.specSectionRows += 1
-                let totalRows = tableView.numberOfRows(inSection: 1)
-                let indexPath = IndexPath(row: totalRows, section: 1)
-                self?.tableView.insertRows(at: [indexPath], with: .bottom)
+                guard let self = self else { return }
+                self.specSectionRows += 1
+                let indexPath = IndexPath(row: self.specSectionRows - 1, section: 1)
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
             return headerView
 
@@ -245,9 +248,15 @@ extension SellerProductViewController: UITableViewDataSource {
         case 0:
             return detailCell
         case 1:
-            specCell.chooseColorHandler = { [weak self] in
+            specCell.chooseColorHandler = { [weak self] cell in
+                guard let self = self else { return }
+
+                guard let indexPath = self.tableView.indexPath(for: cell) else { return }
+                self.currentSpecIndexPath = indexPath
+                //self.testColorData.updateValue(nil, forKey: indexPath)
+
                 if #available(iOS 14.0, *) {
-                    self?.showColorPikerView()
+                    self.showColorPikerView()
                 } else {
                     // Fallback on earlier versions
                 }
@@ -270,6 +279,13 @@ extension SellerProductViewController: UIColorPickerViewControllerDelegate {
     @available(iOS 14.0, *)
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         let color = viewController.selectedColor
-        NotificationCenter.default.post(name: .updateColorView, object: color)
+        guard
+            let indexPath = currentSpecIndexPath,
+            let cell = tableView.cellForRow(at: indexPath) as? UploadProductSpecCell
+        else {
+            return
+        }
+        //testColorData.updateValue(color, forKey: indexPath)
+        cell.colorView.backgroundColor = color
     }
 }
