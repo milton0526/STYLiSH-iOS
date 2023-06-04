@@ -27,7 +27,21 @@ class SellerProductViewController: UIViewController {
             identifier: String(describing: ProductCollectionViewCell.self),
             bundle: nil
         )
+        
         return collectionView
+    }()
+    
+    lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isHidden = true
+//        tableView.lk_registerCellWithNib(
+//            identifier: String(describing: FirstUploadCell.self),
+//            bundle: nil
+//        )
+        tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: "UploadProductBasicCell")
+        return tableView
     }()
 
     private var sellerProducts: [Product] = []
@@ -38,7 +52,6 @@ class SellerProductViewController: UIViewController {
         title = NSLocalizedString("賣家中心")
         setupCloseButton()
         setupViews()
-
     }
 
     private func setupViews() {
@@ -46,6 +59,9 @@ class SellerProductViewController: UIViewController {
         view.addSubview(collectionView)
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             selectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -55,7 +71,12 @@ class SellerProductViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
@@ -86,8 +107,18 @@ extension SellerProductViewController: SelectionViewDataSource {
 
 // MARK: - Selection view delegate
 extension SellerProductViewController: SelectionViewDelegate {
+    func shouldSelectedButton(_ selectionView: SelectionView, at index: Int) -> Bool {
+        return true
+    }
+    
     func didSelectedButton(_ selectionView: SelectionView, at index: Int) {
-        // Change view base on index
+        if index == 1 {
+            collectionView.isHidden = true
+            tableView.isHidden = false
+        } else {
+            tableView.isHidden = true
+            collectionView.isHidden = false
+        }
     }
 }
 
@@ -143,5 +174,90 @@ extension SellerProductViewController: UICollectionViewDataSource {
 
         //cell.layoutCell(image: <#T##String#>, title: <#T##String#>, price: <#T##Int#>)
         return cell
+    }
+}
+
+extension SellerProductViewController: UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+      2
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+      25
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+      
+        let headerView = UIView.init(frame: CGRect(x: 0, y: 0, width: 150, height: 20))
+        let label = UILabel()
+
+        label.frame = CGRect.init(x: 16, y: 0, width: headerView.frame.width, height: headerView.frame.height)
+        label.backgroundColor = .white
+
+        label.textColor = UIColor(hex: "3F3A3A")
+        label.font = UIFont(name: "PingFangTC-Medium", size: 18)
+        if section == 0 {
+            label.text = "商品資訊"
+        } else {
+            label.text = "商品規格"
+        }
+
+        headerView.addSubview(label)
+        headerView.backgroundColor = UIColor.white
+
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "UploadProductBasicCell", for: indexPath) as? UploadProductBasicCell else { fatalError("Could not create TableViewCell") }
+        cell.delegate = self
+        return cell
+    }
+}
+
+extension SellerProductViewController: UITableViewDataSource {
+}
+
+extension SellerProductViewController: UploadProductBasicCellDelegate {
+    func presentAlert(from cell: UploadProductBasicCell) {
+        let alert = UIAlertController(title: "選擇照片來源", message: .empty, preferredStyle: .actionSheet)
+        
+        let dismissAlert = UIAlertAction(title: "關閉", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+        
+        let galleryAction = UIAlertAction(title: "從相簿選擇", style: .default) { _ in
+            cell.selectPhoto()
+        }
+        
+        let cameraAction = UIAlertAction(title: "開啟相機", style: .default) { _ in
+            // 開相機
+        }
+        
+        alert.addAction(dismissAlert)
+        alert.addAction(galleryAction)
+        alert.addAction(cameraAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func presentImagePicker(from cell: UploadProductBasicCell) {
+        let picController = UIImagePickerController()
+        picController.sourceType = .photoLibrary
+        picController.delegate = cell
+        present(picController, animated: true, completion: nil)
+    }
+    
+    func showImage(from cell: UploadProductBasicCell, image: UIImage) {
+        if cell.selectedViewIndex == 0 {
+            cell.uploadImageView1.image = image
+        } else if cell.selectedViewIndex == 1 {
+            cell.uploadImageView2.image = image
+        }
+        dismiss(animated: true, completion: nil)
     }
 }

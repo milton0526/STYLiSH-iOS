@@ -131,6 +131,7 @@
 		915790D42A2B139600CFD37E /* SelectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CD2A2B139600CFD37E /* SelectionViewDelegate.swift */; };
 		915790D62A2B139600CFD37E /* SellerProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790CF2A2B139600CFD37E /* SellerProductViewController.swift */; };
 		915790D82A2B13A400CFD37E /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */; };
+		915790DC2A2B2B2000CFD37E /* UploadProductBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790DB2A2B2B2000CFD37E /* UploadProductBasicCell.swift */; };
 		9180F5182A29DF33000D91AD /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180F5172A29DF33000D91AD /* FloatingButton.swift */; };
 		D306B883B370DFD3ED8ACD74 /* Pods_STYLiSH.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C2B4AF3EF2ABFF2BB9F7AB /* Pods_STYLiSH.framework */; };
 /* End PBXBuildFile section */
@@ -274,6 +275,7 @@
 		915790CD2A2B139600CFD37E /* SelectionViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewDelegate.swift; sourceTree = "<group>"; };
 		915790CF2A2B139600CFD37E /* SellerProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellerProductViewController.swift; sourceTree = "<group>"; };
 		915790D72A2B13A400CFD37E /* UIStackView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
+		915790DB2A2B2B2000CFD37E /* UploadProductBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductBasicCell.swift; sourceTree = "<group>"; };
 		9180F5172A29DF33000D91AD /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		E921004E251C9FC3CBC174F5 /* Pods-STYLiSH.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.release.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.release.xcconfig"; sourceTree = "<group>"; };
 		F551E8F447D7C8DC42B53B98 /* Pods-STYLiSH.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STYLiSH.debug.xcconfig"; path = "Target Support Files/Pods-STYLiSH/Pods-STYLiSH.debug.xcconfig"; sourceTree = "<group>"; };
@@ -747,11 +749,20 @@
 			path = "Selection View";
 			sourceTree = "<group>";
 		};
+		915790DA2A2B2ADA00CFD37E /* UploadTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				915790DB2A2B2B2000CFD37E /* UploadProductBasicCell.swift */,
+			);
+			path = UploadTableViewCell;
+			sourceTree = "<group>";
+		};
 		9180F5162A29DECE000D91AD /* Seller */ = {
 			isa = PBXGroup;
 			children = (
-				9180F5172A29DF33000D91AD /* FloatingButton.swift */,
+				915790DA2A2B2ADA00CFD37E /* UploadTableViewCell */,
 				915790CA2A2B139600CFD37E /* Selection View */,
+				9180F5172A29DF33000D91AD /* FloatingButton.swift */,
 				915790CF2A2B139600CFD37E /* SellerProductViewController.swift */,
 			);
 			path = Seller;
@@ -955,6 +966,7 @@
 				3CDC5A66222D85990071D0D1 /* ColorSelectionCell.swift in Sources */,
 				3C6020D8222B883600312958 /* ProductDescriptionTableViewCell.swift in Sources */,
 				3C0DD876221348E900F5237E /* LobbyViewController.swift in Sources */,
+				915790DC2A2B2B2000CFD37E /* UploadProductBasicCell.swift in Sources */,
 				3C33691F2227DC7B008A5A7A /* TrolleySelectionView.swift in Sources */,
 				3C831C6422E9AF8F00112298 /* STOrderUserInputCell.swift in Sources */,
 				3C4B10E222292EBB009942B7 /* STTapPayViewController.swift in Sources */,
@@ -1232,7 +1244,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FRH9H66G29;
+				DEVELOPMENT_TEAM = QC3WT35T4Y;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/STYLiSH/Resource/TapPay",
@@ -1244,7 +1256,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AppWorksSchool.STYLiSH;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ortonhsieh.DI-Part-5---Moving-between-ViewControllers-without-Segues";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "STYLiSH/Resource/STYLiSH-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1258,7 +1270,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FRH9H66G29;
+				DEVELOPMENT_TEAM = QC3WT35T4Y;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/STYLiSH/Resource/TapPay",
@@ -1270,7 +1282,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AppWorksSchool.STYLiSH;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ortonhsieh.DI-Part-5---Moving-between-ViewControllers-without-Segues";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "STYLiSH/Resource/STYLiSH-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
