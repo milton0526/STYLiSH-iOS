@@ -43,10 +43,15 @@ class SellerProductViewController: UIViewController {
         tableView.register(
             UINib(nibName: String(describing: UploadProductSpecCell.self), bundle: nil),
             forCellReuseIdentifier: UploadProductSpecCell.identifier)
+        tableView.register(
+            UploadProductSpecHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: UploadProductSpecHeaderView.identifier)
         return tableView
     }()
 
     private var sellerProducts: [Product] = []
+
+    private var specSectionRows = 1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,7 +199,31 @@ extension SellerProductViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        section == 0 ? 1 : specSectionRows
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            return nil
+        case 1:
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: UploadProductSpecHeaderView.identifier) as? UploadProductSpecHeaderView
+            else {
+                return nil
+            }
+
+            headerView.handler = { [weak self] in
+                self?.specSectionRows += 1
+                let totalRows = tableView.numberOfRows(inSection: 1)
+                let indexPath = IndexPath(row: totalRows, section: 1)
+                self?.tableView.insertRows(at: [indexPath], with: .bottom)
+            }
+            return headerView
+
+        default:
+            return nil
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
