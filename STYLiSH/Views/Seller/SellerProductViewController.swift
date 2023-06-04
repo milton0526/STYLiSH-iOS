@@ -43,6 +43,9 @@ class SellerProductViewController: UIViewController {
         tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: "UploadProductBasicCell")
         return tableView
     }()
+    
+    lazy var confirmView = UIView()
+    lazy var confirmButton = UIButton()
 
     private var sellerProducts: [Product] = []
 
@@ -52,8 +55,40 @@ class SellerProductViewController: UIViewController {
         title = NSLocalizedString("賣家中心")
         setupCloseButton()
         setupViews()
+        setupConfirmView()
+        setupConfirmConstraint()
     }
 
+    private func setupConfirmView() {
+        confirmView.backgroundColor = .white
+        confirmView.layer.borderWidth = 0.4
+        confirmView.layer.borderColor = UIColor.B2?.cgColor
+        confirmView.isHidden = true
+        
+        confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
+        confirmButton.setAttributedTitle(NSMutableAttributedString(string: "上傳商品", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
+        confirmButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+        confirmButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 16)
+        view.addSubview(confirmView)
+        confirmView.addSubview(confirmButton)
+    }
+    
+    private func setupConfirmConstraint() {
+        [confirmView, confirmButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        NSLayoutConstraint.activate([
+            confirmView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            confirmView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            confirmView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            confirmView.heightAnchor.constraint(equalToConstant: 100),
+            
+            confirmButton.topAnchor.constraint(equalTo: confirmView.topAnchor, constant: 16),
+            confirmButton.leadingAnchor.constraint(equalTo: confirmView.leadingAnchor, constant: 16),
+            confirmButton.trailingAnchor.constraint(equalTo: confirmView.trailingAnchor, constant: -16),
+            confirmButton.heightAnchor.constraint(equalToConstant: 56)
+        ])
+        
+    }
+    
     private func setupViews() {
         view.addSubview(selectionView)
         view.addSubview(collectionView)
@@ -115,9 +150,11 @@ extension SellerProductViewController: SelectionViewDelegate {
         if index == 1 {
             collectionView.isHidden = true
             tableView.isHidden = false
+            confirmView.isHidden = false
         } else {
             tableView.isHidden = true
             collectionView.isHidden = false
+            confirmView.isHidden = true
         }
     }
 }
@@ -179,7 +216,7 @@ extension SellerProductViewController: UICollectionViewDataSource {
 
 extension SellerProductViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-      2
+      1
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -235,7 +272,7 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
         }
         
         let cameraAction = UIAlertAction(title: "開啟相機", style: .default) { _ in
-            // 開相機
+             cell.showCamera()
         }
         
         alert.addAction(dismissAlert)
@@ -252,11 +289,20 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
         present(picController, animated: true, completion: nil)
     }
     
+    func presentCamera(from cell: UploadProductBasicCell) {
+        let picController = UIImagePickerController()
+        picController.sourceType = .camera
+        picController.delegate = cell
+        present(picController, animated: true, completion: nil)
+    }
+    
     func showImage(from cell: UploadProductBasicCell, image: UIImage) {
         if cell.selectedViewIndex == 0 {
             cell.uploadImageView1.image = image
         } else if cell.selectedViewIndex == 1 {
             cell.uploadImageView2.image = image
+        } else if cell.selectedViewIndex == 2 {
+            cell.uploadImageView3.image = image
         }
         dismiss(animated: true, completion: nil)
     }
