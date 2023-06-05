@@ -8,8 +8,13 @@
 
 import UIKit
 
-class SellerProductViewController: STBaseViewController {
+//protocol SellerProductViewControllerDelegate: AnyObject {
+//    func requestBasicCellData(from view: SellerProductViewController) -> UploadBasicCellModel
+//}
 
+class SellerProductViewController: STBaseViewController {
+    
+    
     lazy var selectionView: SelectionView = {
         let selectionView = SelectionView()
         selectionView.dataSource = self
@@ -58,6 +63,8 @@ class SellerProductViewController: STBaseViewController {
     }()
 
     private var sellerProducts: [Product] = []
+    
+    var uploadBasicData: UploadBasicCellModel?
 
     private var specSectionRows = 1
 
@@ -84,6 +91,7 @@ class SellerProductViewController: STBaseViewController {
         confirmButton.setAttributedTitle(NSMutableAttributedString(string: "上傳商品", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
         confirmButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
         confirmButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 16)
+        confirmButton.addTarget(self, action: #selector(uploadProduct), for: .touchUpInside)
         view.addSubview(confirmView)
         confirmView.addSubview(confirmButton)
     }
@@ -148,6 +156,10 @@ class SellerProductViewController: STBaseViewController {
         colorPickerView.supportsAlpha = false
         colorPickerView.delegate = self
         present(colorPickerView, animated: true)
+    }
+    
+    @objc private func uploadProduct() {
+        print(uploadBasicData)
     }
 }
 
@@ -347,13 +359,19 @@ extension SellerProductViewController: UIColorPickerViewControllerDelegate {
         else {
             return
         }
-        //testColorData.updateValue(color, forKey: indexPath)
+        // testColorData.updateValue(color, forKey: indexPath)
         cell.colorView.backgroundColor = color
     }
 }
 
 
 extension SellerProductViewController: UploadProductBasicCellDelegate {
+    func basicCellData(from cell: UploadProductBasicCell, data: UploadBasicCellModel) {
+        // 將
+        uploadBasicData = data
+        
+    }
+    
     func presentAlert(from cell: UploadProductBasicCell) {
         let alert = UIAlertController(title: "選擇照片來源", message: .empty, preferredStyle: .actionSheet)
 
@@ -393,8 +411,10 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
     func showImage(from cell: UploadProductBasicCell, image: UIImage) {
         if cell.selectedViewIndex == 0 {
             cell.uploadImageView1.image = image
+//            cell.firstImageForUpload = image
         } else if cell.selectedViewIndex == 1 {
             cell.uploadImageView2.image = image
+//            cell.secImageForUpload = image
         } 
         dismiss(animated: true, completion: nil)
     }

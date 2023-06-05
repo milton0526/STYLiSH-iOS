@@ -13,6 +13,7 @@ protocol UploadProductBasicCellDelegate: AnyObject {
     func presentImagePicker(from cell: UploadProductBasicCell)
     func presentCamera(from cell: UploadProductBasicCell)
     func showImage(from cell: UploadProductBasicCell, image: UIImage)
+    func basicCellData(from cell: UploadProductBasicCell, data: UploadBasicCellModel)
 }
 
 class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
@@ -23,7 +24,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     let uploadImageView2 = UIImageView()
     
     let productTitleLabel = UILabel()
-
+    
     let productTitleTextField = CustomTextField()
     
     let productDescriptionLabel = UILabel()
@@ -39,13 +40,22 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     let underline1 = UIView()
     let underline2 = UIView()
     
+    // 傳資料
+    var productTitleForUpload: String?
+    var productDesForUpload: String?
+    var selectedButtonStringForUpload = "女裝"
+    
     weak var delegate: UploadProductBasicCellDelegate?
     
     var selectedViewIndex: Int?
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        
+        productTitleTextField.delegate = self
+        productDescriptionTextField.delegate = self
+        
         setupView()
         setupConstraints()
     }
@@ -206,7 +216,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
             productTitleTextField.leadingAnchor.constraint(equalTo: productTitleLabel.leadingAnchor),
             productTitleTextField.trailingAnchor.constraint(equalTo: productTitleLabel.trailingAnchor),
             productTitleTextField.heightAnchor.constraint(equalToConstant: 56),
-//            productTitleTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            //            productTitleTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             
             productDescriptionLabel.topAnchor.constraint(equalTo: productTitleTextField.bottomAnchor, constant: 16),
             productDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -251,6 +261,8 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         [accessoriesButton, menButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
         womenButton.backgroundColor = UIColor(hex: "3F3A3A")
         womenButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+        selectedButtonStringForUpload = womenButton.titleLabel!.text!
+        passData()
     }
     
     @objc func accessoriesButtonAction() {
@@ -258,6 +270,8 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         [womenButton, menButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
         accessoriesButton.backgroundColor = UIColor(hex: "3F3A3A")
         accessoriesButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+        selectedButtonStringForUpload = accessoriesButton.titleLabel!.text!
+        passData()
     }
     
     @objc func menButtonAction() {
@@ -265,6 +279,32 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         [accessoriesButton, womenButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
         menButton.backgroundColor = UIColor(hex: "3F3A3A")
         menButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+        selectedButtonStringForUpload = menButton.titleLabel!.text!
+        passData()
+    }
+    
+    func passData() {
+        guard let titleText = productTitleTextField.text,
+              let desText = productDescriptionTextField.text,
+              !titleText.isEmpty,
+              !desText.isEmpty,
+              let uploadImageView1 = uploadImageView1.image,
+              let uploadImageView2 = uploadImageView2.image
+        else {
+            return
+        }
+        
+        if let imageData1 = uploadImageView1.jpegData(compressionQuality: 0.8),
+           let imageData2 = uploadImageView2.jpegData(compressionQuality: 0.8) {
+            let imageUpload = ImageUpload(image1: imageData1, image2: imageData2)
+            
+            let uploadBasicData = UploadBasicCellModel(
+                images: imageUpload,
+                productTitle: titleText,
+                productDescription: desText,
+                categoryButton: selectedButtonStringForUpload)
+            delegate?.basicCellData(from: self, data: uploadBasicData)
+        }
     }
 }
 
@@ -272,6 +312,7 @@ extension UploadProductBasicCell {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
         guard let image = image else { return }
+        passData()
         delegate?.showImage(from: self, image: image)
     }
 }
@@ -279,14 +320,6 @@ extension UploadProductBasicCell {
 
 
 class STSellerUploadTextView: UITextView {
-    
-//    func textRect(forBounds bounds: CGRect) -> CGRect {
-//        return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
-//    }
-//
-//    func editingRect(forBounds bounds: CGRect) -> CGRect {
-//        return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
-//    }
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -333,5 +366,18 @@ class CustomTextField: UITextField {
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.insetBy(dx: inset, dy: 0)
+    }
+}
+
+extension UploadProductBasicCell: UITextFieldDelegate {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        passData()
+    }
+}
+
+extension UploadProductBasicCell: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        passData()
     }
 }
