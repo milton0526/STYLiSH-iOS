@@ -23,16 +23,21 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     let uploadImageView2 = UIImageView()
     
     let productTitleLabel = UILabel()
-    let productTitleTextField = UITextView()
+
+    let productTitleTextField = CustomTextField()
     
     let productDescriptionLabel = UILabel()
-    let productDescriptionTextField = UITextView()
+    
+    let productDescriptionTextField = STSellerUploadTextView()
     
     let categoryTitleLabel = UILabel()
     let categorySelectorStackView = UIStackView(arrangedSubviews: [])
     let womenButton = UIButton()
     let accessoriesButton = UIButton()
     let menButton = UIButton()
+    
+    let underline1 = UIView()
+    let underline2 = UIView()
     
     weak var delegate: UploadProductBasicCellDelegate?
     
@@ -56,11 +61,13 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         let productDescriptionItems = [productDescriptionLabel, productDescriptionTextField]
         let categoryFrameItems = [categoryTitleLabel, categorySelectorStackView]
         let categoryItems = [womenButton, menButton, accessoriesButton]
+        let underlines = [underline1, underline2]
         categoryItems.forEach { categorySelectorStackView.addSubview($0) }
         categorySelectorStackView.axis = .horizontal
         
         imageFrameItems.forEach { contentView.addSubview( $0 ) }
         imageItems.forEach { imagesScrollView.addSubview( $0 ) }
+        underlines.forEach { contentView.addSubview( $0 ) }
         productTitleItems.forEach { contentView.addSubview( $0 ) }
         productDescriptionItems.forEach { contentView.addSubview( $0 ) }
         categoryFrameItems.forEach { contentView.addSubview( $0 ) }
@@ -95,13 +102,18 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         let productTitle = "名稱"
         let productAttributedText = NSMutableAttributedString(string: productTitle, attributes: attributes)
         
+        underlines.forEach { $0.backgroundColor = .hexStringToUIColor(hex: "cccccc")}
+        
         productTitleLabel.attributedText = productAttributedText
         productTitleLabel.font = UIFont(name: "PingFang TC", size: 14)
         productTitleLabel.textColor = UIColor.B2
         
-        productTitleTextField.backgroundColor = UIColor(hex: "EBEBEB")
+        productTitleTextField.backgroundColor = UIColor(hex: "FFFFFF")
+        productTitleTextField.layer.borderWidth = 0.4
+        productTitleTextField.layer.borderColor = UIColor(hex: "cccccc").cgColor
+        productTitleTextField.layer.cornerRadius = 4
         productTitleTextField.textAlignment = .left
-        productTitleTextField.font = UIFont(name: "PingFang TC", size: 20)
+        productTitleTextField.font = UIFont(name: "PingFang TC", size: 16)
         
         let descriptionTitle = "描述"
         let descriptionAttributedText = NSMutableAttributedString(string: descriptionTitle, attributes: attributes)
@@ -109,10 +121,6 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         productDescriptionLabel.attributedText = descriptionAttributedText
         productDescriptionLabel.font = UIFont(name: "PingFang TC", size: 14)
         productDescriptionLabel.textColor = UIColor.B2
-        
-        productDescriptionTextField.backgroundColor = UIColor(hex: "EBEBEB")
-        productDescriptionTextField.textAlignment = .left
-        productDescriptionTextField.font = UIFont(name: "PingFang TC", size: 20)
         
         categorySelectorStackView.layer.borderWidth = 1
         categorySelectorStackView.layer.borderColor = UIColor(hex: "3F3A3A").cgColor
@@ -149,11 +157,13 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         let productDescriptionItems = [productDescriptionLabel, productDescriptionTextField]
         let categoryFrameItems = [categoryTitleLabel, categorySelectorStackView, womenButton, menButton, accessoriesButton]
         let categoryItems = [womenButton, menButton, accessoriesButton]
+        let underlines = [underline1, underline2]
         imageItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         productTitleItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         productDescriptionItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         categoryFrameItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         categoryItems.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        underlines.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
             uploadImageLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
@@ -181,6 +191,16 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
             productTitleLabel.topAnchor.constraint(equalTo: imagesScrollView.bottomAnchor, constant: 16),
             productTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             productTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            underline1.leadingAnchor.constraint(equalTo: productTitleTextField.leadingAnchor),
+            underline1.trailingAnchor.constraint(equalTo: productTitleTextField.trailingAnchor),
+            underline1.topAnchor.constraint(equalTo: productTitleTextField.bottomAnchor),
+            underline1.heightAnchor.constraint(equalToConstant: 0.7),
+            
+            underline2.leadingAnchor.constraint(equalTo: productDescriptionTextField.leadingAnchor),
+            underline2.trailingAnchor.constraint(equalTo: productDescriptionTextField.trailingAnchor),
+            underline2.topAnchor.constraint(equalTo: productDescriptionTextField.bottomAnchor),
+            underline2.heightAnchor.constraint(equalToConstant: 0.7),
             
             productTitleTextField.topAnchor.constraint(equalTo: productTitleLabel.bottomAnchor, constant: 4),
             productTitleTextField.leadingAnchor.constraint(equalTo: productTitleLabel.leadingAnchor),
@@ -253,5 +273,65 @@ extension UploadProductBasicCell {
         let image = info[.originalImage] as? UIImage
         guard let image = image else { return }
         delegate?.showImage(from: self, image: image)
+    }
+}
+
+
+
+class STSellerUploadTextView: UITextView {
+    
+//    func textRect(forBounds bounds: CGRect) -> CGRect {
+//        return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
+//    }
+//
+//    func editingRect(forBounds bounds: CGRect) -> CGRect {
+//        return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
+//    }
+    
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        backgroundColor = UIColor(hex: "FFFFFF")
+        layer.borderWidth = 0.4
+        layer.borderColor = UIColor(hex: "cccccc").cgColor
+        layer.cornerRadius = 4
+        textAlignment = .left
+        font = UIFont(name: "PingFang TC", size: 16)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        addUnderLine()
+    }
+    
+    private func addUnderLine() {
+        let underline = UIView()
+        underline.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(underline)
+        
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: underline.leadingAnchor),
+            trailingAnchor.constraint(equalTo: underline.trailingAnchor),
+            bottomAnchor.constraint(equalTo: underline.bottomAnchor),
+            underline.heightAnchor.constraint(equalToConstant: 1.0)
+        ])
+        
+        underline.backgroundColor = .hexStringToUIColor(hex: "cccccc")
+    }
+}
+
+class CustomTextField: UITextField {
+    
+    let inset: CGFloat = 10.0
+    
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.insetBy(dx: inset, dy: 0)
+    }
+    
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.insetBy(dx: inset, dy: 0)
     }
 }
