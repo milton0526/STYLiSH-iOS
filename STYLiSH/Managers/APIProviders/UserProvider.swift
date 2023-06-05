@@ -22,8 +22,8 @@ enum STYLiSHSignInError: Error {
 
 class UserProvider {
 
-    func signInToSTYLiSH(fbToken: String, completion: @escaping (Result<Void>) -> Void) {
-        HTTPClient.shared.request(STUserRequest.signin(fbToken), completion: { result in
+    func signInToSTYLiSH(email: String, password: String, completion: @escaping (Result<Void>) -> Void) {
+        HTTPClient.shared.request(STUserRequest.signin(email: email, password: password), completion: { result in
             switch result {
             case .success(let data):
                 do {
