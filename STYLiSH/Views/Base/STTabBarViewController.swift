@@ -119,7 +119,7 @@ extension STTabBarViewController: UITabBarControllerDelegate {
             return true
         }
         
-        if KeyChainManager.shared.token == nil {
+        if KeyChainManager.shared.token != nil {
             if let authVC = UIStoryboard.auth.instantiateInitialViewController() {
                 authVC.modalPresentationStyle = .overCurrentContext
                 present(authVC, animated: false, completion: nil)
@@ -132,7 +132,7 @@ extension STTabBarViewController: UITabBarControllerDelegate {
     
     @objc func sellerMode() {
         // 點擊時要判斷是否有 token 如果有則是跳出 Alert 不然就是跳出 FB 登入
-        if KeyChainManager.shared.token == nil {
+        if KeyChainManager.shared.token != nil {
             if let authVC = UIStoryboard.auth.instantiateInitialViewController() {
                 authVC.modalPresentationStyle = .overCurrentContext
                 present(authVC, animated: false, completion: nil)

@@ -27,8 +27,12 @@ class SellerProductViewController: STBaseViewController {
             identifier: String(describing: ProductCollectionViewCell.self),
             bundle: nil
         )
+        
         return collectionView
     }()
+    
+    lazy var confirmView = UIView()
+    lazy var confirmButton = UIButton()
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -46,6 +50,7 @@ class SellerProductViewController: STBaseViewController {
         tableView.register(
             UploadProductSpecHeaderView.self,
             forHeaderFooterViewReuseIdentifier: UploadProductSpecHeaderView.identifier)
+        tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: UploadProductBasicCell.identifier)
         return tableView
     }()
 
@@ -61,10 +66,41 @@ class SellerProductViewController: STBaseViewController {
         view.backgroundColor = .white
         title = NSLocalizedString("賣家中心")
         setupCloseButton()
+        setupConfirmView()
+        setupConfirmConstraint()
         setupViews()
-
     }
 
+    private func setupConfirmView() {
+        confirmView.backgroundColor = .white
+        confirmView.layer.borderWidth = 0.4
+        confirmView.layer.borderColor = UIColor.B2?.cgColor
+        confirmView.isHidden = true
+
+        confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
+        confirmButton.setAttributedTitle(NSMutableAttributedString(string: "上傳商品", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
+        confirmButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+        confirmButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 16)
+        view.addSubview(confirmView)
+        confirmView.addSubview(confirmButton)
+    }
+    
+    private func setupConfirmConstraint() {
+        [confirmView, confirmButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        NSLayoutConstraint.activate([
+            confirmView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            confirmView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            confirmView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            confirmView.heightAnchor.constraint(equalToConstant: 100),
+            
+            confirmButton.topAnchor.constraint(equalTo: confirmView.topAnchor, constant: 16),
+            confirmButton.leadingAnchor.constraint(equalTo: confirmView.leadingAnchor, constant: 16),
+            confirmButton.trailingAnchor.constraint(equalTo: confirmView.trailingAnchor, constant: -16),
+            confirmButton.heightAnchor.constraint(equalToConstant: 56)
+        ])
+        
+    }
+    
     private func setupViews() {
         view.addSubview(selectionView)
         view.addSubview(collectionView)
@@ -86,7 +122,7 @@ class SellerProductViewController: STBaseViewController {
             tableView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: confirmView.topAnchor)
         ])
     }
 
@@ -132,9 +168,11 @@ extension SellerProductViewController: SelectionViewDelegate {
     func didSelectedButton(_ selectionView: SelectionView, at index: Int) {
         if index == 1 {
             collectionView.isHidden = true
+            confirmView.isHidden = false
             tableView.isHidden = false
         } else {
             collectionView.isHidden = false
+            confirmView.isHidden = true
             tableView.isHidden = true
         }
     }
@@ -202,7 +240,7 @@ extension SellerProductViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? 1 : specSectionRows
+        section == 0 ? 2 : specSectionRows
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -230,6 +268,14 @@ extension SellerProductViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let basicCell = tableView.dequeueReusableCell(
+            withIdentifier: UploadProductBasicCell.identifier,
+            for: indexPath) as? UploadProductBasicCell
+        else {
+            fatalError("Failed to dequeue cell.")
+        }
+
+
         guard let detailCell = tableView.dequeueReusableCell(
             withIdentifier: UploadProductDetailCell.identifier,
             for: indexPath) as? UploadProductDetailCell
@@ -246,7 +292,13 @@ extension SellerProductViewController: UITableViewDataSource {
 
         switch indexPath.section {
         case 0:
+            if indexPath.row == 0 {
+                basicCell.delegate = self
+                return basicCell
+            }
+
             return detailCell
+
         case 1:
             specCell.chooseColorHandler = { [weak self] cell in
                 guard let self = self else { return }
@@ -287,5 +339,55 @@ extension SellerProductViewController: UIColorPickerViewControllerDelegate {
         }
         //testColorData.updateValue(color, forKey: indexPath)
         cell.colorView.backgroundColor = color
+    }
+}
+
+
+extension SellerProductViewController: UploadProductBasicCellDelegate {
+    func presentAlert(from cell: UploadProductBasicCell) {
+        let alert = UIAlertController(title: "選擇照片來源", message: .empty, preferredStyle: .actionSheet)
+
+        let dismissAlert = UIAlertAction(title: "關閉", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+
+        let galleryAction = UIAlertAction(title: "從相簿選擇", style: .default) { _ in
+            cell.selectPhoto()
+        }
+
+        let cameraAction = UIAlertAction(title: "開啟相機", style: .default) { _ in
+             cell.showCamera()
+        }
+
+        alert.addAction(dismissAlert)
+        alert.addAction(galleryAction)
+        alert.addAction(cameraAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    func presentImagePicker(from cell: UploadProductBasicCell) {
+        let picController = UIImagePickerController()
+        picController.sourceType = .photoLibrary
+        picController.delegate = cell
+        present(picController, animated: true, completion: nil)
+    }
+
+    func presentCamera(from cell: UploadProductBasicCell) {
+        let picController = UIImagePickerController()
+        picController.sourceType = .camera
+        picController.delegate = cell
+        present(picController, animated: true, completion: nil)
+    }
+
+    func showImage(from cell: UploadProductBasicCell, image: UIImage) {
+        if cell.selectedViewIndex == 0 {
+            cell.uploadImageView1.image = image
+        } else if cell.selectedViewIndex == 1 {
+            cell.uploadImageView2.image = image
+        } else if cell.selectedViewIndex == 2 {
+            cell.uploadImageView3.image = image
+        }
+        dismiss(animated: true, completion: nil)
     }
 }
