@@ -14,6 +14,11 @@ class AuthViewController: STBaseViewController {
 
     private let userProvider = UserProvider()
 
+    @IBOutlet weak var emailTextField: STOrderUserInputTextField!
+    @IBOutlet weak var passwordTextField: STOrderUserInputTextField!
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.isHidden = true
@@ -30,21 +35,36 @@ class AuthViewController: STBaseViewController {
         presentingViewController?.dismiss(animated: false, completion: nil)
     }
 
-    @IBAction func onFacebookLogin() {
-        userProvider.loginWithFaceBook(from: self, completion: { [weak self] result in
-            switch result {
-            case .success(let token):
-                self?.onSTYLiSHSignIn(token: token)
-            case .failure:
-                LKProgressHUD.showSuccess(text: "Facebook 登入失敗!")
-            }
-        })
+
+//    @IBAction func onFacebookLogin() {
+//        userProvider.loginWithFaceBook(from: self, completion: { [weak self] result in
+//            switch result {
+//            case .success(let token):
+//                self?.onSTYLiSHSignIn(token: token)
+//            case .failure:
+//                LKProgressHUD.showSuccess(text: "Facebook 登入失敗!")
+//            }
+//        })
+//    }
+
+    @IBAction func signUpButtonAction(_ sender: UIButton) {
+
     }
 
-    private func onSTYLiSHSignIn(token: String) {
+    @IBAction func onSTYLiSHSignIn(_ sender: UIButton) {
+        guard
+            let email = emailTextField.text,
+            let password = passwordTextField.text,
+            !email.isEmpty,
+            !password.isEmpty
+        else {
+            showAlert()
+            return
+        }
+
         LKProgressHUD.show()
 
-        userProvider.signInToSTYLiSH(fbToken: token, completion: { [weak self] result in
+        userProvider.signInToSTYLiSH(email: email, password: password, completion: { [weak self] result in
             LKProgressHUD.dismiss()
 
             switch result {
@@ -57,5 +77,15 @@ class AuthViewController: STBaseViewController {
                 self?.presentingViewController?.dismiss(animated: false, completion: nil)
             }
         })
+    }
+
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Something went wrong!",
+            message: "Please check your email and password",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
     }
 }

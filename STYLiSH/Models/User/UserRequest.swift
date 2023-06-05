@@ -9,7 +9,7 @@
 import Foundation
 
 enum STUserRequest: STRequest {
-    case signin(String)
+    case signin(email: String, password: String)
     case checkout(token: String, body: Data?)
     case profile(token: String)
 
@@ -32,10 +32,11 @@ enum STUserRequest: STRequest {
 
     var body: Data? {
         switch self {
-        case .signin(let token):
+        case .signin(let email, let password):
             let dict = [
-                "provider": "facebook",
-                "access_token": token
+                "provider": "native",
+                "email": email,
+                "password": password
             ]
             return try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
         case .checkout(_, let body):

@@ -9,21 +9,46 @@
 import Foundation
 
 struct UserObject: Codable {
-    let accessToken: String
-    let user: User
-    
+    let accessToken: String?
+    let data: User
+
     enum CodingKeys: String, CodingKey {
-        case user
+        case data
         case accessToken = "access_token"
     }
 }
 
 struct User: Codable {
-    let id: Int?
-    let provider: String
+    let id: Int
+    let provider: String?
     let name: String
     let email: String
     let picture: String
+    let orderRecord: [OrderRecord]?
+}
+
+struct OrderRecord: Codable {
+    let number: String
+    let total: Int
+    let products: [OrderProduct]
+}
+
+struct OrderProduct: Codable {
+    let orderId: Int
+    let productTitle: String
+    let productId: Int
+    let colorName: String
+    let size: String
+    let quantity: Int
+    let image: String
+
+    enum CodingKeys: String, CodingKey {
+        case size, quantity, image
+        case orderId = "order_id"
+        case productTitle = "product_title"
+        case productId = "product_id"
+        case colorName = "color_name"
+    }
 }
 
 struct Reciept: Codable {
