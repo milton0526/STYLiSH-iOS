@@ -62,7 +62,12 @@ class SellerProductViewController: STBaseViewController {
     private var specSectionRows = 1
 
     private var currentSpecIndexPath: IndexPath?
-    //private var testColorData: [IndexPath: UIColor?] = [:]
+
+    private var variants: [IndexPath: Variant] = [:] {
+        didSet {
+            print(variants)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -285,7 +290,6 @@ extension SellerProductViewController: UITableViewDataSource {
             fatalError("Failed to dequeue cell.")
         }
 
-
         guard let detailCell = tableView.dequeueReusableCell(
             withIdentifier: UploadProductDetailCell.identifier,
             for: indexPath) as? UploadProductDetailCell
@@ -310,25 +314,33 @@ extension SellerProductViewController: UITableViewDataSource {
             return detailCell
 
         case 1:
-            specCell.chooseColorHandler = { [weak self] cell in
-                guard let self = self else { return }
-
-                guard let indexPath = self.tableView.indexPath(for: cell) else { return }
-                self.currentSpecIndexPath = indexPath
-                //self.testColorData.updateValue(nil, forKey: indexPath)
-
-                if #available(iOS 14.0, *) {
-                    self.showColorPikerView()
-                } else {
-                    // Fallback on earlier versions
-                }
-            }
+            specCell.delegate = self
             return specCell
         default:
             return UITableViewCell()
         }
 
     }
+}
+
+// MARK: - Spec cell Delegate {
+extension SellerProductViewController: UploadProductSpecCellDelegate {
+    func chooseColor(_ cell: UITableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else { return }
+        self.currentSpecIndexPath = indexPath
+
+        if #available(iOS 14.0, *) {
+            self.showColorPikerView()
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+
+    func passData(_ cell: UITableViewCell, variant: Variant) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else { return }
+        self.variants.updateValue(variant, forKey: indexPath)
+    }
+
 }
 
 // MARK: UITable view delegate
@@ -347,11 +359,10 @@ extension SellerProductViewController: UIColorPickerViewControllerDelegate {
         else {
             return
         }
-        //testColorData.updateValue(color, forKey: indexPath)
         cell.colorView.backgroundColor = color
+        cell.checkUserInput()
     }
 }
-
 
 extension SellerProductViewController: UploadProductBasicCellDelegate {
     func presentAlert(from cell: UploadProductBasicCell) {

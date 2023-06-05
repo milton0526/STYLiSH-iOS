@@ -8,10 +8,18 @@
 
 import UIKit
 
+protocol UploadProductSpecCellDelegate: AnyObject {
+    func chooseColor(_ cell: UITableViewCell)
+    func passData(_ cell: UITableViewCell, variant: Variant)
+}
+
 class UploadProductSpecCell: UITableViewCell {
+
+    weak var delegate: UploadProductSpecCellDelegate?
 
     @IBOutlet weak var colorView: UIView! {
         didSet {
+            colorView.backgroundColor = UIColor(hex: "#000000")
             colorView.layer.cornerRadius = 10
             colorView.layer.masksToBounds = true
             colorView.layer.borderWidth = 1
@@ -45,23 +53,35 @@ class UploadProductSpecCell: UITableViewCell {
 
     private let sizeData = PickerModel(title: "Size", data: ["S", "M", "L"])
 
-    var chooseColorHandler: ((UITableViewCell) -> Void)?
-
     override func awakeFromNib() {
         super.awakeFromNib()
-
     }
 
     @objc private func changeColor(_ gesture: UITapGestureRecognizer) {
-        chooseColorHandler?(self)
+        delegate?.chooseColor(self)
     }
 
+    func checkUserInput() {
+        guard
+            let color = colorView.backgroundColor?.hexStringFromColor,
+            let size = sizeTextField.text,
+            let amount = amountTextField.text,
+            !size.isEmpty,
+            !amount.isEmpty,
+            let stock = Int(amount)
+        else {
+            return
+        }
+
+        let variants = Variant(colorCode: color, size: size, stock: stock)
+        delegate?.passData(self, variant: variants)
+    }
 }
 
 // MARK: - UITextField Delegate
 extension UploadProductSpecCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // pass data in textField
+        checkUserInput()
     }
 }
 
@@ -87,4 +107,3 @@ extension UploadProductSpecCell: UIPickerViewDataSource {
     }
 
 }
-
