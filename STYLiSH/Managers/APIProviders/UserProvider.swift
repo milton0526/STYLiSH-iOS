@@ -96,21 +96,53 @@ class UserProvider {
         guard let token = KeyChainManager.shared.token else {
             return completion(Result.failure(STYLiSHSignInError.noToken))
         }
-        let request = STUserRequest.profile(token: token)
-        HTTPClient.shared.request(request, completion: { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let user = try JSONDecoder().decode(STSuccessParser<User>.self, from: data)
-                    DispatchQueue.main.async {
-                        completion(Result.success(user.data))
-                    }
-                } catch {
-                    completion(Result.failure(error))
-                }
-            case .failure(let error):
-                completion(Result.failure(error))
+
+        guard let url = URL(string: "http://13.251.222.244/api/user/profile") else {
+            return
+        }
+        
+
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = [
+            "Authorization": token
+        ]
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil else { return }
+            guard
+                let data = data,
+                let response = response as? HTTPURLResponse,
+                response.statusCode == 200
+            else {
+                return
             }
-        })
+
+            do {
+                let result = try JSONDecoder().decode(UserObject.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(result.data))
+                }
+            } catch {
+                print("Decode profile data error.")
+            }
+        }.resume()
+
+//        let request = STUserRequest.profile(token: token)
+//
+//        HTTPClient.shared.request(request, completion: { result in
+//            switch result {
+//            case .success(let data):
+//                do {
+//                    let user = try JSONDecoder().decode(STSuccessParser<User>.self, from: data)
+//                    DispatchQueue.main.async {
+//                        completion(Result.success(user.data))
+//                    }
+//                } catch {
+//                    completion(Result.failure(error))
+//                }
+//            case .failure(let error):
+//                completion(Result.failure(error))
+//            }
+//        })
     }
 }
