@@ -326,19 +326,19 @@ extension SellerProductViewController: UITableViewDataSource {
 // MARK: - Spec cell Delegate {
 extension SellerProductViewController: UploadProductSpecCellDelegate {
     func chooseColor(_ cell: UITableViewCell) {
-        guard let indexPath = self.tableView.indexPath(for: cell) else { return }
-        self.currentSpecIndexPath = indexPath
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        currentSpecIndexPath = indexPath
 
         if #available(iOS 14.0, *) {
-            self.showColorPikerView()
+           showColorPikerView()
         } else {
             // Fallback on earlier versions
         }
     }
 
     func passData(_ cell: UITableViewCell, variant: Variant) {
-        guard let indexPath = self.tableView.indexPath(for: cell) else { return }
-        self.variants.updateValue(variant, forKey: indexPath)
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        variants.updateValue(variant, forKey: indexPath)
     }
 
 }
