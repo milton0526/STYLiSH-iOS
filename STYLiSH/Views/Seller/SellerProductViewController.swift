@@ -8,10 +8,6 @@
 
 import UIKit
 
-//protocol SellerProductViewControllerDelegate: AnyObject {
-//    func requestBasicCellData(from view: SellerProductViewController) -> UploadBasicCellModel
-//}
-
 class SellerProductViewController: STBaseViewController {
     
     
@@ -65,6 +61,7 @@ class SellerProductViewController: STBaseViewController {
     private var sellerProducts: [Product] = []
     
     var uploadBasicData: UploadBasicCellModel?
+    var uploadDetailData: UploadDetailCellModel?
 
     private var specSectionRows = 1
 
@@ -160,6 +157,7 @@ class SellerProductViewController: STBaseViewController {
     
     @objc private func uploadProduct() {
         print(uploadBasicData)
+        print(uploadDetailData)
     }
 }
 
@@ -318,7 +316,7 @@ extension SellerProductViewController: UITableViewDataSource {
                 basicCell.delegate = self
                 return basicCell
             }
-
+            detailCell.delegate = self
             return detailCell
 
         case 1:
@@ -417,5 +415,13 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
 //            cell.secImageForUpload = image
         } 
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension SellerProductViewController: UploadProductDetailCellDelegate {
+    func detailCellData(from cell: UploadProductDetailCell, data: UploadDetailCellModel) {
+        cell.delegate = self
+        uploadDetailData = data
+        print(uploadDetailData)
     }
 }

@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol UploadProductDetailCellDelegate: AnyObject {
+    func detailCellData(from cell: UploadProductDetailCell, data: UploadDetailCellModel)
+}
+
 struct PickerModel {
     let title: String
     let data: [String]
 }
 
 class UploadProductDetailCell: UITableViewCell {
+    
+    weak var delegate: UploadProductDetailCellDelegate?
 
     @IBOutlet weak var textureTextField: STOrderUserInputTextField! {
         didSet {
@@ -78,12 +84,36 @@ class UploadProductDetailCell: UITableViewCell {
             fatalError()
         }
     }
+    
+    func passData() {
+        guard let textureText = textureTextField.text,
+              let washText = washTextField.text,
+              let contryText = countryTextField.text,
+              let priceText = priceTextField.text,
+              !textureText.isEmpty,
+              !washText.isEmpty,
+              !contryText.isEmpty,
+              !priceText.isEmpty
+        else {
+            return
+        }
+        
+        let uploadDetailData = UploadDetailCellModel(
+            texture: textureText,
+            wash: washText,
+            contry: contryText,
+            price: priceText
+        )
+        
+        delegate?.detailCellData(from: self, data: uploadDetailData)
+    }
 }
 
 // MARK: - UITextField Delegate
 extension UploadProductDetailCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         // pass data in each textField
+        passData()
 
     }
 }
