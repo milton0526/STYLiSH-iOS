@@ -21,13 +21,12 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     let imagesScrollView = UIScrollView()
     let uploadImageView1 = UIImageView()
     let uploadImageView2 = UIImageView()
-    let uploadImageView3 = UIImageView()
     
     let productTitleLabel = UILabel()
-    let productTitleTextField = UITextField()
+    let productTitleTextField = UITextView()
     
     let productDescriptionLabel = UILabel()
-    let productDescriptionTextField = UITextField()
+    let productDescriptionTextField = UITextView()
     
     let categoryTitleLabel = UILabel()
     let categorySelectorStackView = UIStackView(arrangedSubviews: [])
@@ -52,7 +51,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     
     func setupView() {
         let imageFrameItems = [uploadImageLabel, imagesScrollView]
-        let imageItems = [uploadImageView1, uploadImageView2, uploadImageView3]
+        let imageItems = [uploadImageView1, uploadImageView2]
         let productTitleItems = [productTitleLabel, productTitleTextField]
         let productDescriptionItems = [productDescriptionLabel, productDescriptionTextField]
         let categoryFrameItems = [categoryTitleLabel, categorySelectorStackView]
@@ -81,20 +80,17 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         // Create separate tap gesture recognizers for each image view
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(uploadForm))
         let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(uploadForm))
-        let tapGestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(uploadForm))
         
         // Add the tap gesture recognizers to the image views
         uploadImageView1.addGestureRecognizer(tapGestureRecognizer1)
         uploadImageView1.tag = 0
         uploadImageView2.addGestureRecognizer(tapGestureRecognizer2)
         uploadImageView2.tag = 1
-        uploadImageView3.addGestureRecognizer(tapGestureRecognizer3)
-        uploadImageView3.tag = 2
         
-        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.contentMode = .scaleAspectFill }
-        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.clipsToBounds = true }
-        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.isUserInteractionEnabled = true }
-        [uploadImageView1, uploadImageView2, uploadImageView3].forEach { $0.image = UIImage.asset(.Image_Placeholder) }
+        [uploadImageView1, uploadImageView2].forEach { $0.contentMode = .scaleAspectFill }
+        [uploadImageView1, uploadImageView2].forEach { $0.clipsToBounds = true }
+        [uploadImageView1, uploadImageView2].forEach { $0.isUserInteractionEnabled = true }
+        [uploadImageView1, uploadImageView2].forEach { $0.image = UIImage.asset(.Image_Placeholder) }
         
         let productTitle = "名稱"
         let productAttributedText = NSMutableAttributedString(string: productTitle, attributes: attributes)
@@ -104,6 +100,8 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         productTitleLabel.textColor = UIColor.B2
         
         productTitleTextField.backgroundColor = UIColor(hex: "EBEBEB")
+        productTitleTextField.textAlignment = .left
+        productTitleTextField.font = UIFont(name: "PingFang TC", size: 20)
         
         let descriptionTitle = "描述"
         let descriptionAttributedText = NSMutableAttributedString(string: descriptionTitle, attributes: attributes)
@@ -113,6 +111,8 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         productDescriptionLabel.textColor = UIColor.B2
         
         productDescriptionTextField.backgroundColor = UIColor(hex: "EBEBEB")
+        productDescriptionTextField.textAlignment = .left
+        productDescriptionTextField.font = UIFont(name: "PingFang TC", size: 20)
         
         categorySelectorStackView.layer.borderWidth = 1
         categorySelectorStackView.layer.borderColor = UIColor(hex: "3F3A3A").cgColor
@@ -144,7 +144,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     }
     
     func setupConstraints() {
-        let imageItems = [uploadImageLabel, imagesScrollView, uploadImageView1, uploadImageView2, uploadImageView3]
+        let imageItems = [uploadImageLabel, imagesScrollView, uploadImageView1, uploadImageView2]
         let productTitleItems = [productTitleLabel, productTitleTextField]
         let productDescriptionItems = [productDescriptionLabel, productDescriptionTextField]
         let categoryFrameItems = [categoryTitleLabel, categorySelectorStackView, womenButton, menButton, accessoriesButton]
@@ -173,16 +173,10 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
             
             uploadImageView2.topAnchor.constraint(equalTo: imagesScrollView.topAnchor),
             uploadImageView2.leadingAnchor.constraint(equalTo: uploadImageView1.trailingAnchor, constant: 15),
+            uploadImageView2.trailingAnchor.constraint(equalTo: imagesScrollView.trailingAnchor, constant: -15),
             uploadImageView2.bottomAnchor.constraint(equalTo: imagesScrollView.bottomAnchor),
             uploadImageView2.widthAnchor.constraint(equalToConstant: 237),
             uploadImageView2.heightAnchor.constraint(equalToConstant: 317),
-            
-            uploadImageView3.topAnchor.constraint(equalTo: imagesScrollView.topAnchor),
-            uploadImageView3.leadingAnchor.constraint(equalTo: uploadImageView2.trailingAnchor, constant: 15),
-            uploadImageView3.trailingAnchor.constraint(equalTo: imagesScrollView.trailingAnchor, constant: -15),
-            uploadImageView3.bottomAnchor.constraint(equalTo: imagesScrollView.bottomAnchor),
-            uploadImageView3.widthAnchor.constraint(equalToConstant: 237),
-            uploadImageView3.heightAnchor.constraint(equalToConstant: 317),
             
             productTitleLabel.topAnchor.constraint(equalTo: imagesScrollView.bottomAnchor, constant: 16),
             productTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

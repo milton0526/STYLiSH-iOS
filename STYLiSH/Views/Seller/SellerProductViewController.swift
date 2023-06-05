@@ -50,6 +50,9 @@ class SellerProductViewController: STBaseViewController {
         tableView.register(
             UploadProductSpecHeaderView.self,
             forHeaderFooterViewReuseIdentifier: UploadProductSpecHeaderView.identifier)
+        tableView.register(
+            UploadProductBasicHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: UploadProductBasicHeaderView.identifier)
         tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: UploadProductBasicCell.identifier)
         return tableView
     }()
@@ -246,7 +249,13 @@ extension SellerProductViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
         case 0:
-            return nil
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: UploadProductBasicHeaderView.identifier) as? UploadProductBasicHeaderView
+            else {
+                return nil
+            }
+            return headerView
+            
         case 1:
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: UploadProductSpecHeaderView.identifier) as? UploadProductSpecHeaderView
@@ -259,6 +268,7 @@ extension SellerProductViewController: UITableViewDataSource {
                 self.specSectionRows += 1
                 let indexPath = IndexPath(row: self.specSectionRows - 1, section: 1)
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
+                self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
             }
             return headerView
 
@@ -385,9 +395,7 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
             cell.uploadImageView1.image = image
         } else if cell.selectedViewIndex == 1 {
             cell.uploadImageView2.image = image
-        } else if cell.selectedViewIndex == 2 {
-            cell.uploadImageView3.image = image
-        }
+        } 
         dismiss(animated: true, completion: nil)
     }
 }
