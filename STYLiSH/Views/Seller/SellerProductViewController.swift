@@ -10,12 +10,12 @@ import UIKit
 
 class SellerProductViewController: UIViewController {
 
-    lazy var selectionView: SelectionView = {
-        let selectionView = SelectionView()
-        selectionView.dataSource = self
-        selectionView.delegate = self
-        return selectionView
-    }()
+//    lazy var selectionView: SelectionView = {
+//        let selectionView = SelectionView()
+//        selectionView.dataSource = self
+//        selectionView.delegate = self
+//        return selectionView
+//    }()
 
     let buttonTitles = [NSLocalizedString("我的商品"), NSLocalizedString("我要上架")]
 
@@ -31,18 +31,18 @@ class SellerProductViewController: UIViewController {
         return collectionView
     }()
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.isHidden = true
+//    lazy var tableView: UITableView = {
+//        let tableView = UITableView(frame: .zero, style: .grouped)
+//        tableView.delegate = self
+//        tableView.dataSource = self
+//        tableView.isHidden = true
 //        tableView.lk_registerCellWithNib(
 //            identifier: String(describing: FirstUploadCell.self),
 //            bundle: nil
 //        )
-        tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: "UploadProductBasicCell")
-        return tableView
-    }()
+//        tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: "UploadProductBasicCell")
+//        return tableView
+//    }()
     
     lazy var confirmView = UIView()
     lazy var confirmButton = UIButton()
@@ -55,23 +55,23 @@ class SellerProductViewController: UIViewController {
         title = NSLocalizedString("賣家中心")
         setupCloseButton()
         setupViews()
-        setupConfirmView()
+//        setupConfirmView()
         setupConfirmConstraint()
     }
 
-    private func setupConfirmView() {
-        confirmView.backgroundColor = .white
-        confirmView.layer.borderWidth = 0.4
-        confirmView.layer.borderColor = UIColor.B2?.cgColor
-        confirmView.isHidden = true
-        
-        confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
-        confirmButton.setAttributedTitle(NSMutableAttributedString(string: "上傳商品", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
-        confirmButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
-        confirmButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 16)
-        view.addSubview(confirmView)
-        confirmView.addSubview(confirmButton)
-    }
+//    private func setupConfirmView() {
+//        confirmView.backgroundColor = .white
+//        confirmView.layer.borderWidth = 0.4
+//        confirmView.layer.borderColor = UIColor.B2?.cgColor
+//        confirmView.isHidden = true
+//
+//        confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
+//        confirmButton.setAttributedTitle(NSMutableAttributedString(string: "上傳商品", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
+//        confirmButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
+//        confirmButton.titleLabel?.font = UIFont(name: "PingFangTC-Regular", size: 16)
+//        view.addSubview(confirmView)
+//        confirmView.addSubview(confirmButton)
+//    }
     
     private func setupConfirmConstraint() {
         [confirmView, confirmButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
@@ -95,8 +95,8 @@ class SellerProductViewController: UIViewController {
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(tableView)
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             selectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -108,10 +108,10 @@ class SellerProductViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            tableView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -28)
+//            tableView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
+//            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -28)
         ])
     }
 
@@ -140,24 +140,24 @@ extension SellerProductViewController: SelectionViewDataSource {
     }
 }
 
-// MARK: - Selection view delegate
-extension SellerProductViewController: SelectionViewDelegate {
-    func shouldSelectedButton(_ selectionView: SelectionView, at index: Int) -> Bool {
-        return true
-    }
-    
-    func didSelectedButton(_ selectionView: SelectionView, at index: Int) {
-        if index == 1 {
-            collectionView.isHidden = true
-            tableView.isHidden = false
-            confirmView.isHidden = false
-        } else {
-            tableView.isHidden = true
-            collectionView.isHidden = false
-            confirmView.isHidden = true
-        }
-    }
-}
+//// MARK: - Selection view delegate
+//extension SellerProductViewController: SelectionViewDelegate {
+//    func shouldSelectedButton(_ selectionView: SelectionView, at index: Int) -> Bool {
+//        return true
+//    }
+//
+//    func didSelectedButton(_ selectionView: SelectionView, at index: Int) {
+//        if index == 1 {
+//            collectionView.isHidden = true
+//            tableView.isHidden = false
+//            confirmView.isHidden = false
+//        } else {
+//            tableView.isHidden = true
+//            collectionView.isHidden = false
+//            confirmView.isHidden = true
+//        }
+//    }
+//}
 
 // MARK: - Collection view delegate
 extension SellerProductViewController: UICollectionViewDelegateFlowLayout {
@@ -214,52 +214,52 @@ extension SellerProductViewController: UICollectionViewDataSource {
     }
 }
 
-extension SellerProductViewController: UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-      1
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-      25
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-      
-        let headerView = UIView.init(frame: CGRect(x: 0, y: 0, width: 150, height: 20))
-        let label = UILabel()
+//extension SellerProductViewController: UITableViewDelegate {
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//      1
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//      25
+//    }
+//
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//
+//        let headerView = UIView.init(frame: CGRect(x: 0, y: 0, width: 150, height: 20))
+//        let label = UILabel()
+//
+//        label.frame = CGRect.init(x: 16, y: 8, width: headerView.frame.width, height: headerView.frame.height)
+//        label.backgroundColor = .white
+//
+//        label.textColor = UIColor(hex: "3F3A3A")
+//        label.font = UIFont(name: "PingFangTC-Medium", size: 18)
+//        if section == 0 {
+//            label.text = "商品資訊"
+//        } else {
+//            label.text = "商品規格"
+//        }
+//
+//        headerView.addSubview(label)
+//        headerView.backgroundColor = UIColor.white
+//
+//        return headerView
+//    }
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        1
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        tableView.separatorStyle = .none
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "UploadProductBasicCell", for: indexPath) as? UploadProductBasicCell else { fatalError("Could not create TableViewCell") }
+//        cell.delegate = self
+//
+//        return cell
+//    }
+//}
 
-        label.frame = CGRect.init(x: 16, y: 8, width: headerView.frame.width, height: headerView.frame.height)
-        label.backgroundColor = .white
-
-        label.textColor = UIColor(hex: "3F3A3A")
-        label.font = UIFont(name: "PingFangTC-Medium", size: 18)
-        if section == 0 {
-            label.text = "商品資訊"
-        } else {
-            label.text = "商品規格"
-        }
-        
-        headerView.addSubview(label)
-        headerView.backgroundColor = UIColor.white
-
-        return headerView
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        tableView.separatorStyle = .none
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "UploadProductBasicCell", for: indexPath) as? UploadProductBasicCell else { fatalError("Could not create TableViewCell") }
-        cell.delegate = self
-        
-        return cell
-    }
-}
-
-extension SellerProductViewController: UITableViewDataSource {
-}
+//extension SellerProductViewController: UITableViewDataSource {
+//}
 
 extension SellerProductViewController: UploadProductBasicCellDelegate {
     func presentAlert(from cell: UploadProductBasicCell) {
