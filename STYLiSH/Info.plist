@@ -63,7 +63,7 @@
 		<false/>
 	</dict>
 	<key>STBaseURL</key>
-	<string>http://13.251.222.244/api</string>
+	<string>http://18.138.32.11/api</string>
 	<key>STTapPayAppID</key>
 	<integer>12348</integer>
 	<key>STTapPayAppKey</key>
