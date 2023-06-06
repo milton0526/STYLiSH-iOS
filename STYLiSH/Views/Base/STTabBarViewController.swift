@@ -18,8 +18,6 @@ class STTabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        KeyChainManager.shared.token = nil
-
         viewControllers = tabs.map { $0.makeViewController() }
 
         trolleyTabBarItem = viewControllers?[2].tabBarItem
