@@ -58,7 +58,13 @@ class SellerProductViewController: STBaseViewController {
         return tableView
     }()
     
-    private var sellerProducts: [Product] = []
+    private var sellerProducts: [Product] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
     
     var uploadBasicData: UploadBasicCellModel?
     var uploadDetailData: UploadDetailCellModel?
@@ -137,6 +143,8 @@ class SellerProductViewController: STBaseViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: confirmView.topAnchor)
         ])
+
+        fetchAllSellerProduct()
     }
     
     private func setupCloseButton() {
@@ -146,6 +154,42 @@ class SellerProductViewController: STBaseViewController {
             target: self,
             action: #selector(didClickCloseButton))
         navigationItem.rightBarButtonItem = closeButton
+    }
+
+    private func fetchAllSellerProduct() {
+        let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
+        guard
+            let url = URL(string: "\(baseURL)/products/seller"),
+            let token = KeyChainManager.shared.token
+        else {
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard
+                let self = self,
+                error == nil,
+                let data = data,
+                let response = response as? HTTPURLResponse,
+                response.statusCode == 200
+            else {
+                return
+            }
+
+            do {
+                let result = try JSONDecoder().decode(STSuccessParser<[Product]>.self, from: data)
+                self.sellerProducts = result.data
+
+            } catch {
+                print("Decode error")
+                print(error.localizedDescription)
+            }
+        }
+
+        task.resume()
     }
     
     @objc private func didClickCloseButton(_ sender: UIBarButtonItem) {
@@ -392,12 +436,24 @@ extension SellerProductViewController: UICollectionViewDelegateFlowLayout {
                 height: Int(164.0 / 375.0 * UIScreen.width * 308.0 / 164.0)
             )
         }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard
+            let detailVC = UIStoryboard.product.instantiateViewController(
+                withIdentifier: String(describing: ProductDetailViewController.self)
+            ) as? ProductDetailViewController
+        else {
+            return
+        }
+        detailVC.product = sellerProducts[indexPath.item]
+        show(detailVC, sender: nil)
+    }
 }
 
 // MARK: - Collection view dataSource
 extension SellerProductViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        6
+        sellerProducts.count
     }
     
     func collectionView(
@@ -409,8 +465,11 @@ extension SellerProductViewController: UICollectionViewDataSource {
             else {
                 fatalError("Failed to dequeue cell.")
             }
-            
-            //cell.layoutCell(image: <#T##String#>, title: <#T##String#>, price: <#T##Int#>)
+
+            let product = sellerProducts[indexPath.item]
+
+            cell.layoutCell(image: product.mainImage, title: product.title, price: product.price)
+
             return cell
         }
 }

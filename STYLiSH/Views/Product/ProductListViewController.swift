@@ -147,11 +147,7 @@ class ProductListViewController: STCompondViewController {
         else {
             return cell
         }
-        productCell.layoutCell(
-            image: product.mainImage,
-            title: product.title,
-            price: product.price
-        )
+        productCell.layoutCell(image: product.mainImage, title: product.title, price: product.price)
         return productCell
     }
 
