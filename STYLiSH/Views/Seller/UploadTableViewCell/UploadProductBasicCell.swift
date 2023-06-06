@@ -14,6 +14,7 @@ protocol UploadProductBasicCellDelegate: AnyObject {
     func presentCamera(from cell: UploadProductBasicCell)
     func showImage(from cell: UploadProductBasicCell, image: UIImage)
     func basicCellData(from cell: UploadProductBasicCell, data: UploadBasicCellModel)
+    func removeData(_ cell: UploadProductBasicCell)
 }
 
 class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
@@ -291,6 +292,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
               let uploadImageView1 = uploadImageView1.image,
               let uploadImageView2 = uploadImageView2.image
         else {
+            delegate?.removeData(self)
             return
         }
         

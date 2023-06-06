@@ -161,91 +161,123 @@ class SellerProductViewController: STBaseViewController {
     }
     
     @objc private func uploadProduct() {
-//        if specSectionRows != 0
-        var responseFromServer = 0
-        confirmButton.isUserInteractionEnabled = false
-        confirmButton.backgroundColor = UIColor(hex: "7D7676")
-        let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
-        guard let url = URL(string: "\(baseURL)/product") else {
-            return
-        }
-        let dicCount = variants.count
-        let colorCodes = variants.map { $0.value.colorCode }
-        let sizes = variants.map { $0.value.size }
-        let stocksInt = variants.map { $0.value.stock }
-        let stocksString = stocksInt.map { String($0) }
-        
-        guard let uploadBasicData = uploadBasicData,
-              let uploadDetailData = uploadDetailData
-        else {
-            return
-        }
-        
-        let temporaryToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI0LCJpYXQiOjE2ODYwMjk5NDUsImV4cCI6MTY4NjM3NTU0NX0.WzJWe4MifkQCFGQLqf0uEUobWq1i8MToajL4bWlgpBU"
-        
-        let stringParameter: [String: String] = [
-            "title" : uploadBasicData.productTitle,
-            "price": uploadDetailData.price,
-            "category": uploadBasicData.categoryButton,
-            "description": uploadBasicData.productDescription,
-            "story": uploadBasicData.productDescription,
-            "texture": uploadDetailData.texture,
-            "wash": uploadDetailData.wash,
-            "place": uploadDetailData.contry,
-            "note": "沒有給使用者填寫",
-        ]
-        
-        let stringArrayParameter: [String: [String]] = [
-            "size": sizes,
-            "stock": stocksString,
-            "color": colorCodes,
-            "colorName": colorCodes
-        ]
-        
-        
-        let headers: HTTPHeaders = ["Authorization": KeyChainManager.shared.token ?? temporaryToken]
-        
-        AF.upload(multipartFormData: { multipartFormData in
-            multipartFormData.append(uploadBasicData.images.image1, withName: "main_image", fileName: "image.jpg", mimeType: "image/jpeg")
-            multipartFormData.append(uploadBasicData.images.image1, withName: "images", fileName: "image.jpg", mimeType: "image/jpeg")
-            multipartFormData.append(uploadBasicData.images.image2, withName: "images", fileName: "image.jpg", mimeType: "image/jpeg")
-            for (key, value) in stringParameter {
-                multipartFormData.append(Data(value.utf8), withName: key)
-            }
 
-            for (key, value) in stringArrayParameter {
-                for index in value.indices {
-                    multipartFormData.append(Data(value[index].utf8), withName: key)
-                }
+        if specSectionRows != 0 && uploadBasicData != nil && uploadDetailData != nil && variants.isEmpty != true {
+            var responseFromServer = 0
+            confirmButton.isUserInteractionEnabled = false
+            confirmButton.backgroundColor = UIColor(hex: "7D7676")
+            let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
+            guard let url = URL(string: "\(baseURL)/product") else {
+                return
             }
-        }, to: url, headers: headers)
-        .validate()
-        .response { response in
-            switch response.result {
-            case .success(let value):
-                print("Image uploaded successfully: \(value)")
-                responseFromServer = response.response!.statusCode
-            case .failure(let error):
-                if let statusCode = response.response?.statusCode {
-                    switch statusCode {
-                    case 400..<500:
-                        print("Client error: \(statusCode)")
-                        // Handle client-side errors (4xx)
-                    case 500..<600:
-                        print("Server error: \(statusCode)")
-                        print(response)
-                        // Handle server-side errors (5xx)
-                    default:
-                        print("Unexpected status code: \(statusCode)")
+            let dicCount = variants.count
+            let colorCodes = variants.map { $0.value.colorCode }
+            let sizes = variants.map { $0.value.size }
+            let stocksInt = variants.map { $0.value.stock }
+            let stocksString = stocksInt.map { String($0) }
+            
+            guard let uploadBasicData = uploadBasicData,
+                  let uploadDetailData = uploadDetailData
+            else {
+                return
+            }
+            
+            let temporaryToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI0LCJpYXQiOjE2ODYwMjk5NDUsImV4cCI6MTY4NjM3NTU0NX0.WzJWe4MifkQCFGQLqf0uEUobWq1i8MToajL4bWlgpBU"
+            
+            let stringParameter: [String: String] = [
+                "title" : uploadBasicData.productTitle,
+                "price": uploadDetailData.price,
+                "category": uploadBasicData.categoryButton,
+                "description": uploadBasicData.productDescription,
+                "story": uploadBasicData.productDescription,
+                "texture": uploadDetailData.texture,
+                "wash": uploadDetailData.wash,
+                "place": uploadDetailData.contry,
+                "note": "實品顏色依單品照為主",
+            ]
+            
+            let stringArrayParameter: [String: [String]] = [
+                "size": sizes,
+                "stock": stocksString,
+                "color": colorCodes,
+                "colorName": colorCodes
+            ]
+            
+            
+            let headers: HTTPHeaders = ["Authorization": KeyChainManager.shared.token ?? temporaryToken]
+            
+            AF.upload(multipartFormData: { multipartFormData in
+                multipartFormData.append(uploadBasicData.images.image1, withName: "main_image", fileName: "image.jpg", mimeType: "image/jpeg")
+                multipartFormData.append(uploadBasicData.images.image1, withName: "images", fileName: "image.jpg", mimeType: "image/jpeg")
+                multipartFormData.append(uploadBasicData.images.image2, withName: "images", fileName: "image.jpg", mimeType: "image/jpeg")
+                for (key, value) in stringParameter {
+                    multipartFormData.append(Data(value.utf8), withName: key)
+                }
+
+                for (key, value) in stringArrayParameter {
+                    for index in value.indices {
+                        multipartFormData.append(Data(value[index].utf8), withName: key)
                     }
-                } else {
-                    print("Image upload failed: \(error)")
+                }
+            }, to: url, headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success(let value):
+                    print("Image uploaded successfully: \(value)")
+                    responseFromServer = response.response!.statusCode
+                    if responseFromServer == 200 {
+                        self.confirmButton.isUserInteractionEnabled = true
+                        self.confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
+                    }
+                    
+                    self.uploadBasicData = nil
+                    self.uploadDetailData = nil
+                    self.variants.removeAll()
+                    self.tableView.reloadData()
+                    
+                    let alert = UIAlertController(title: "商品上架成功", message: nil, preferredStyle: .alert)
+                    let confirmAction = UIAlertAction(title: "確定", style: .cancel) { _ in
+                        alert.dismiss(animated: true)
+                    }
+                    alert.addAction(confirmAction)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    print(responseFromServer)
+                case .failure(let error):
+                    let alert = UIAlertController(title: "商品上架失敗，請再試一遍", message: nil, preferredStyle: .alert)
+                    let confirmAction = UIAlertAction(title: "確定", style: .cancel) { _ in
+                        alert.dismiss(animated: true)
+                    }
+                    alert.addAction(confirmAction)
+                    self.present(alert, animated: true, completion: nil)
+                    if let statusCode = response.response?.statusCode {
+                        switch statusCode {
+                        case 400..<500:
+                            print("Client error: \(statusCode)")
+                            // Handle client-side errors (4xx)
+                        case 500..<600:
+                            print("Server error: \(statusCode)")
+                            print(response)
+                            // Handle server-side errors (5xx)
+                        default:
+                            print("Unexpected status code: \(statusCode)")
+                        }
+                    } else {
+                        print("Image upload failed: \(error)")
+                    }
                 }
             }
-        }
-        if responseFromServer == 200 {
-            confirmButton.isUserInteractionEnabled = true
-            confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
+        } else {
+            let alert = UIAlertController(title: "注意", message: "您仍有欄位尚未填寫", preferredStyle: .alert)
+            
+            let confirmAction = UIAlertAction(title: "確定", style: .cancel) { _ in
+                alert.dismiss(animated: true)
+            }
+            
+            alert.addAction(confirmAction)
+            
+            present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -402,6 +434,10 @@ extension SellerProductViewController: UITableViewDataSource {
         case 0:
             if indexPath.row == 0 {
                 basicCell.delegate = self
+                basicCell.uploadImageView1.image = UIImage.asset(.Image_Placeholder)
+                basicCell.uploadImageView2.image = UIImage.asset(.Image_Placeholder)
+                basicCell.productTitleTextField.text = ""
+                basicCell.productDescriptionTextField.text = ""
                 return basicCell
             }
             detailCell.delegate = self
@@ -419,6 +455,11 @@ extension SellerProductViewController: UITableViewDataSource {
 
 // MARK: - Spec cell Delegate {
 extension SellerProductViewController: UploadProductSpecCellDelegate {
+    func removeData(_ cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        variants.removeValue(forKey: indexPath)
+    }
+    
     func chooseColor(_ cell: UITableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         currentSpecIndexPath = indexPath
@@ -459,6 +500,10 @@ extension SellerProductViewController: UIColorPickerViewControllerDelegate {
 }
 
 extension SellerProductViewController: UploadProductBasicCellDelegate {
+    func removeData(_ cell: UploadProductBasicCell) {
+        uploadBasicData = nil
+    }
+    
     func basicCellData(from cell: UploadProductBasicCell, data: UploadBasicCellModel) {
         // 將
         uploadBasicData = data
@@ -514,6 +559,10 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
 }
 
 extension SellerProductViewController: UploadProductDetailCellDelegate {
+    func removeData(_ cell: UploadProductDetailCell) {
+        uploadDetailData = nil
+    }
+    
     func detailCellData(from cell: UploadProductDetailCell, data: UploadDetailCellModel) {
         cell.delegate = self
         uploadDetailData = data

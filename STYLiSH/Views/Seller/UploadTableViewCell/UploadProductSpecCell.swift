@@ -11,6 +11,7 @@ import UIKit
 protocol UploadProductSpecCellDelegate: AnyObject {
     func chooseColor(_ cell: UITableViewCell)
     func passData(_ cell: UITableViewCell, variant: Variant)
+    func removeData(_ cell: UITableViewCell)
 }
 
 class UploadProductSpecCell: UITableViewCell {
@@ -70,6 +71,7 @@ class UploadProductSpecCell: UITableViewCell {
             !amount.isEmpty,
             let stock = Int(amount)
         else {
+            delegate?.removeData(self)
             return
         }
 

@@ -56,7 +56,6 @@ class ProfileViewController: UIViewController {
     private func setSellerIcon() {
         let setSellerIcon = UIImage.asset(.house_lodge_fill)
         let setSellerButton = UIBarButtonItem(image: setSellerIcon, style: .plain, target: self, action: #selector(sellerButtonTapped))
-        setSellerButton.width = 28
         setSellerButton.tintColor = UIColor(hex: "3F3A3A")
         navigationItem.leftBarButtonItem = setSellerButton
     }
