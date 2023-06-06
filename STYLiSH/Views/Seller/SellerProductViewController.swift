@@ -149,7 +149,22 @@ class SellerProductViewController: STBaseViewController {
     }
     
     @objc private func didClickCloseButton(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
+        let alert = UIAlertController(title: "離開我的賣場", message: .empty, preferredStyle: .alert)
+        
+        let dismissAlert = UIAlertAction(title: "返回", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+        
+        let cameraAction = UIAlertAction(title: "確定", style: .default) { _ in
+            self.dismiss(animated: true)
+        }
+        
+        alert.addAction(dismissAlert)
+        alert.addAction(cameraAction)
+        
+        present(alert, animated: true, completion: nil)
+//
+//        dismiss(animated: true)
     }
     
     @available(iOS 14.0, *)
