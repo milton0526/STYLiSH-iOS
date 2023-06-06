@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class SellerProductViewController: STBaseViewController {
     
@@ -17,9 +18,9 @@ class SellerProductViewController: STBaseViewController {
         selectionView.delegate = self
         return selectionView
     }()
-
+    
     let buttonTitles = [NSLocalizedString("我的商品"), NSLocalizedString("我要上架")]
-
+    
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
@@ -34,7 +35,7 @@ class SellerProductViewController: STBaseViewController {
     
     lazy var confirmView = UIView()
     lazy var confirmButton = UIButton()
-
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -57,22 +58,22 @@ class SellerProductViewController: STBaseViewController {
         tableView.register(UploadProductBasicCell.self, forCellReuseIdentifier: UploadProductBasicCell.identifier)
         return tableView
     }()
-
+    
     private var sellerProducts: [Product] = []
     
     var uploadBasicData: UploadBasicCellModel?
     var uploadDetailData: UploadDetailCellModel?
-
+    
     private var specSectionRows = 1
-
+    
     private var currentSpecIndexPath: IndexPath?
-
+    
     private var variants: [IndexPath: Variant] = [:] {
         didSet {
             print(variants)
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -82,13 +83,13 @@ class SellerProductViewController: STBaseViewController {
         setupConfirmConstraint()
         setupViews()
     }
-
+    
     private func setupConfirmView() {
         confirmView.backgroundColor = .white
         confirmView.layer.borderWidth = 0.4
         confirmView.layer.borderColor = UIColor.B2?.cgColor
         confirmView.isHidden = true
-
+        
         confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
         confirmButton.setAttributedTitle(NSMutableAttributedString(string: "上傳商品", attributes: [NSAttributedString.Key.kern: 2.4]), for: .normal)
         confirmButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
@@ -121,24 +122,24 @@ class SellerProductViewController: STBaseViewController {
         selectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             selectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             selectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             selectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-
+            
             collectionView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
+            
             tableView.topAnchor.constraint(equalTo: selectionView.bottomAnchor, constant: 6),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: confirmView.topAnchor)
         ])
     }
-
+    
     private func setupCloseButton() {
         let closeButton = UIBarButtonItem(
             image: .asset(.Icons_24px_Close),
@@ -147,11 +148,11 @@ class SellerProductViewController: STBaseViewController {
             action: #selector(didClickCloseButton))
         navigationItem.rightBarButtonItem = closeButton
     }
-
+    
     @objc private func didClickCloseButton(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
-
+    
     @available(iOS 14.0, *)
     private func showColorPikerView() {
         let colorPickerView = UIColorPickerViewController()
@@ -160,9 +161,173 @@ class SellerProductViewController: STBaseViewController {
         present(colorPickerView, animated: true)
     }
     
+    //    @objc private func uploadProduct() {
+    //        let dicCount = variants.count
+    //        let colorCodes = variants.map { $0.value.colorCode }
+    //        let sizes = variants.map { $0.value.size }
+    //        let stocksInt = variants.map { $0.value.stock }
+    //        let stocksString = stocksInt.map { String($0) }
+    //
+    //        guard let uploadBasicData = uploadBasicData,
+    //              let uploadDetailData = uploadDetailData
+    //        else {
+    //            return
+    //        }
+    //        let product = SellerProduct(
+    //            title: uploadBasicData.productTitle,
+    //            price: uploadDetailData.price,
+    //            category: uploadBasicData.categoryButton,
+    //            description: uploadBasicData.productDescription,
+    //            story: uploadBasicData.productDescription,
+    //            texture: uploadDetailData.texture,
+    //            wash: uploadDetailData.wash,
+    //            place: uploadDetailData.contry,
+    //            note: "沒有給使用者填寫",
+    //            mainImage: uploadBasicData.images.image1,
+    //            images: [uploadBasicData.images.image1, uploadBasicData.images.image2],
+    //            size: sizes,
+    //            stock: stocksString,
+    //            color: colorCodes,
+    //            colorName: colorCodes
+    //        )
+    //
+    //        guard let url = URL(string: "http://18.138.32.11/api/product") else {
+    //            fatalError("Invalid URL")
+    //        }
+    //
+    //        let encoder = JSONEncoder()
+    //        guard let jsonData = try? encoder.encode(product) else {
+    //            fatalError("Failed to encode product data")
+    //        }
+    //
+    //        var request = URLRequest(url: url)
+    //        request.httpMethod = "POST"
+    //        request.allHTTPHeaderFields = ["Authorization": KeyChainManager.shared.token ?? ""]
+    //        request.httpBody = jsonData
+    //
+    //        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+    //            if let error = error {
+    //                print("Error sending request: \(error)")
+    //                return
+    //            }
+    //
+    //            if let data = data {
+    //                // 处理服务器响应
+    //                if let responseString = String(data: data, encoding: .utf8) {
+    //                    print("Response: \(responseString)")
+    //                }
+    //            }
+    //        }
+    //        task.resume()
+    //    }
+    
     @objc private func uploadProduct() {
-        print(uploadBasicData)
-        print(uploadDetailData)
+        let urlString = "http://18.138.32.11/api/product"
+        guard let url = URL(string: urlString) else {
+            // Handle invalid URL error
+            return
+        }
+        let dicCount = variants.count
+        let colorCodes = variants.map { $0.value.colorCode }
+        let sizes = variants.map { $0.value.size }
+        let stocksInt = variants.map { $0.value.stock }
+        let stocksString = stocksInt.map { String($0) }
+        
+        guard let uploadBasicData = uploadBasicData,
+              let uploadDetailData = uploadDetailData
+        else {
+            return
+        }
+        
+        let product = SellerProduct(
+            title: uploadBasicData.productTitle,
+            price: uploadDetailData.price,
+            category: uploadBasicData.categoryButton,
+            description: uploadBasicData.productDescription,
+            story: uploadBasicData.productDescription,
+            texture: uploadDetailData.texture,
+            wash: uploadDetailData.wash,
+            place: uploadDetailData.contry,
+            note: "沒有給使用者填寫",
+            size: sizes,
+            stock: stocksString,
+            color: colorCodes,
+            colorName: colorCodes
+        )
+        
+        let encoder = JSONEncoder()
+        guard let jsonData = try? encoder.encode(product) else {
+            fatalError("Failed to encode product data")
+        }
+        
+        let temporaryToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI0LCJpYXQiOjE2ODYwMjk5NDUsImV4cCI6MTY4NjM3NTU0NX0.WzJWe4MifkQCFGQLqf0uEUobWq1i8MToajL4bWlgpBU"
+        
+        let stringParameter: [String: String] = [
+            "title" : uploadBasicData.productTitle,
+            "price": uploadDetailData.price,
+            "category": uploadBasicData.categoryButton,
+            "description": uploadBasicData.productDescription,
+            "story": uploadBasicData.productDescription,
+            "texture": uploadDetailData.texture,
+            "wash": uploadDetailData.wash,
+            "place": uploadDetailData.contry,
+            "note": "沒有給使用者填寫",
+        ]
+        
+        let stringArrayParameter: [String: [String]] = [
+            "size": sizes,
+            "stock": stocksString,
+            "color": colorCodes,
+            "colorName": colorCodes
+        ]
+        
+        
+        let headers: HTTPHeaders = ["Authorization": KeyChainManager.shared.token ?? temporaryToken]
+        
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(uploadBasicData.images.image1, withName: "main_image", fileName: "image.jpg", mimeType: "image/jpeg")
+            multipartFormData.append(uploadBasicData.images.image1, withName: "images", fileName: "image.jpg", mimeType: "image/jpeg")
+            multipartFormData.append(uploadBasicData.images.image2, withName: "images", fileName: "image.jpg", mimeType: "image/jpeg")
+            for (key, value) in stringParameter {
+                multipartFormData.append(Data(value.utf8), withName: key)
+            }
+            
+            
+            for (key, value) in stringArrayParameter {
+                for index in value.indices {
+                    multipartFormData.append(Data(value[index].utf8), withName: key)
+                }
+            }
+            
+        }, to: url, headers: headers)
+        .validate()
+        .response { response in
+            switch response.result {
+            case .success(let value):
+                print("Image uploaded successfully: (value)")
+            case .failure(let error):
+                // Handle the error response
+                print(response.response?.headers)
+                print(response.response?.url)
+                print(response.response?.allHeaderFields)
+                print(response.response?.statusCode)
+                
+                if let statusCode = response.response?.statusCode {
+                    switch statusCode {
+                    case 400..<500:
+                        print("Client error: \(statusCode)")
+                        // Handle client-side errors (4xx)
+                    case 500..<600:
+                        print("Server error: \(statusCode)")
+                        // Handle server-side errors (5xx)
+                    default:
+                        print("Unexpected status code: \(statusCode)")
+                    }
+                } else {
+                    print("Image upload failed: \(error)")
+                }
+            }
+        }
     }
 }
 
@@ -171,7 +336,7 @@ extension SellerProductViewController: SelectionViewDataSource {
     func numberOfButtons(_ selectionView: SelectionView) -> Int {
         buttonTitles.count
     }
-
+    
     func selectionView(_ selectionView: SelectionView, titleForButtonAt index: Int) -> String? {
         buttonTitles[index]
     }
@@ -182,7 +347,7 @@ extension SellerProductViewController: SelectionViewDelegate {
     func shouldSelectedButton(_ selectionView: SelectionView, at index: Int) -> Bool {
         return true
     }
-
+    
     func didSelectedButton(_ selectionView: SelectionView, at index: Int) {
         if index == 1 {
             collectionView.isHidden = true
@@ -202,32 +367,32 @@ extension SellerProductViewController: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 24.0, left: 16.0, bottom: 24.0, right: 16.0)
-    }
-
+            return UIEdgeInsets(top: 24.0, left: 16.0, bottom: 24.0, right: 16.0)
+        }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        0
-    }
-
+            0
+        }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        24
-    }
-
+            24
+        }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(
-            width: Int(164.0 / 375.0 * UIScreen.width) ,
-            height: Int(164.0 / 375.0 * UIScreen.width * 308.0 / 164.0)
-        )
-    }
+            return CGSize(
+                width: Int(164.0 / 375.0 * UIScreen.width) ,
+                height: Int(164.0 / 375.0 * UIScreen.width * 308.0 / 164.0)
+            )
+        }
 }
 
 // MARK: - Collection view dataSource
@@ -235,20 +400,20 @@ extension SellerProductViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         6
     }
-
+    
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: String(describing: ProductCollectionViewCell.self),
-            for: indexPath) as? ProductCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: ProductCollectionViewCell.self),
+                for: indexPath) as? ProductCollectionViewCell
             else {
-            fatalError("Failed to dequeue cell.")
+                fatalError("Failed to dequeue cell.")
+            }
+            
+            //cell.layoutCell(image: <#T##String#>, title: <#T##String#>, price: <#T##Int#>)
+            return cell
         }
-
-        //cell.layoutCell(image: <#T##String#>, title: <#T##String#>, price: <#T##Int#>)
-        return cell
-    }
 }
 
 // MARK: - UITable view dataSource
@@ -256,11 +421,11 @@ extension SellerProductViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         2
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         section == 0 ? 2 : specSectionRows
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
         case 0:
@@ -277,7 +442,7 @@ extension SellerProductViewController: UITableViewDataSource {
             else {
                 return nil
             }
-
+            
             headerView.handler = { [weak self] in
                 guard let self = self else { return }
                 self.specSectionRows += 1
@@ -286,12 +451,12 @@ extension SellerProductViewController: UITableViewDataSource {
                 self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
             }
             return headerView
-
+            
         default:
             return nil
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let basicCell = tableView.dequeueReusableCell(
             withIdentifier: UploadProductBasicCell.identifier,
@@ -299,21 +464,21 @@ extension SellerProductViewController: UITableViewDataSource {
         else {
             fatalError("Failed to dequeue cell.")
         }
-
+        
         guard let detailCell = tableView.dequeueReusableCell(
             withIdentifier: UploadProductDetailCell.identifier,
             for: indexPath) as? UploadProductDetailCell
         else {
             fatalError("Failed to dequeue cell.")
         }
-
+        
         guard let specCell = tableView.dequeueReusableCell(
             withIdentifier: UploadProductSpecCell.identifier,
             for: indexPath) as? UploadProductSpecCell
         else {
             fatalError("Failed to dequeue cell.")
         }
-
+        
         switch indexPath.section {
         case 0:
             if indexPath.row == 0 {
@@ -322,14 +487,14 @@ extension SellerProductViewController: UITableViewDataSource {
             }
             detailCell.delegate = self
             return detailCell
-
+            
         case 1:
             specCell.delegate = self
             return specCell
         default:
             return UITableViewCell()
         }
-
+        
     }
 }
 
@@ -338,24 +503,24 @@ extension SellerProductViewController: UploadProductSpecCellDelegate {
     func chooseColor(_ cell: UITableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         currentSpecIndexPath = indexPath
-
+        
         if #available(iOS 14.0, *) {
-           showColorPikerView()
+            showColorPikerView()
         } else {
             // Fallback on earlier versions
         }
     }
-
+    
     func passData(_ cell: UITableViewCell, variant: Variant) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         variants.updateValue(variant, forKey: indexPath)
     }
-
+    
 }
 
 // MARK: UITable view delegate
 extension SellerProductViewController: UITableViewDelegate {
-
+    
 }
 
 // MARK: - ColorPickerView Delegate
@@ -383,48 +548,48 @@ extension SellerProductViewController: UploadProductBasicCellDelegate {
     
     func presentAlert(from cell: UploadProductBasicCell) {
         let alert = UIAlertController(title: "選擇照片來源", message: .empty, preferredStyle: .actionSheet)
-
+        
         let dismissAlert = UIAlertAction(title: "關閉", style: .cancel) { _ in
             alert.dismiss(animated: true)
         }
-
+        
         let galleryAction = UIAlertAction(title: "從相簿選擇", style: .default) { _ in
             cell.selectPhoto()
         }
-
+        
         let cameraAction = UIAlertAction(title: "開啟相機", style: .default) { _ in
-             cell.showCamera()
+            cell.showCamera()
         }
-
+        
         alert.addAction(dismissAlert)
         alert.addAction(galleryAction)
         alert.addAction(cameraAction)
-
+        
         present(alert, animated: true, completion: nil)
     }
-
+    
     func presentImagePicker(from cell: UploadProductBasicCell) {
         let picController = UIImagePickerController()
         picController.sourceType = .photoLibrary
         picController.delegate = cell
         present(picController, animated: true, completion: nil)
     }
-
+    
     func presentCamera(from cell: UploadProductBasicCell) {
         let picController = UIImagePickerController()
         picController.sourceType = .camera
         picController.delegate = cell
         present(picController, animated: true, completion: nil)
     }
-
+    
     func showImage(from cell: UploadProductBasicCell, image: UIImage) {
         if cell.selectedViewIndex == 0 {
             cell.uploadImageView1.image = image
-//            cell.firstImageForUpload = image
+            //            cell.firstImageForUpload = image
         } else if cell.selectedViewIndex == 1 {
             cell.uploadImageView2.image = image
-//            cell.secImageForUpload = image
-        } 
+            //            cell.secImageForUpload = image
+        }
         dismiss(animated: true, completion: nil)
     }
 }

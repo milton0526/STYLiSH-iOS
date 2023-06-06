@@ -43,7 +43,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
     // 傳資料
     var productTitleForUpload: String?
     var productDesForUpload: String?
-    var selectedButtonStringForUpload = "女裝"
+    var selectedButtonStringForUpload = "women"
     
     weak var delegate: UploadProductBasicCellDelegate?
     
@@ -261,7 +261,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         [accessoriesButton, menButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
         womenButton.backgroundColor = UIColor(hex: "3F3A3A")
         womenButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
-        selectedButtonStringForUpload = womenButton.titleLabel!.text!
+        selectedButtonStringForUpload = "women"
         passData()
     }
     
@@ -270,7 +270,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         [womenButton, menButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
         accessoriesButton.backgroundColor = UIColor(hex: "3F3A3A")
         accessoriesButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
-        selectedButtonStringForUpload = accessoriesButton.titleLabel!.text!
+        selectedButtonStringForUpload = "accessories"
         passData()
     }
     
@@ -279,7 +279,7 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
         [accessoriesButton, womenButton].forEach { $0.setTitleColor(UIColor(hex: "3F3A3A"), for: .normal) }
         menButton.backgroundColor = UIColor(hex: "3F3A3A")
         menButton.setTitleColor(UIColor(hex: "FFFFFF"), for: .normal)
-        selectedButtonStringForUpload = menButton.titleLabel!.text!
+        selectedButtonStringForUpload = "men"
         passData()
     }
     
@@ -294,8 +294,8 @@ class UploadProductBasicCell: UITableViewCell, UIImagePickerControllerDelegate, 
             return
         }
         
-        if let imageData1 = uploadImageView1.jpegData(compressionQuality: 0.8),
-           let imageData2 = uploadImageView2.jpegData(compressionQuality: 0.8) {
+        if let imageData1 = uploadImageView1.jpegData(compressionQuality: 0.2),
+           let imageData2 = uploadImageView2.jpegData(compressionQuality: 0.2) {
             let imageUpload = ImageUpload(image1: imageData1, image2: imageData2)
             
             let uploadBasicData = UploadBasicCellModel(

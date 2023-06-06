@@ -15,5 +15,6 @@ target 'STYLiSH' do
   pod 'KeychainAccess'
   pod 'FBSDKLoginKit'
   pod 'SwiftLint'
+  pod 'Alamofire'
   
 end
