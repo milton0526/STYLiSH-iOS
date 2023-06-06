@@ -9,12 +9,15 @@
 import Foundation
 
 enum STUserRequest: STRequest {
+    case signUp(name: String, email: String, password: String)
     case signin(email: String, password: String)
     case checkout(token: String, body: Data?)
     case profile(token: String)
 
     var headers: [String: String] {
         switch self {
+        case .signUp:
+            return [STHTTPHeaderField.contentType.rawValue: STHTTPHeaderValue.json.rawValue]
         case .signin:
             return [STHTTPHeaderField.contentType.rawValue: STHTTPHeaderValue.json.rawValue]
         case .checkout(let token, _):
@@ -32,6 +35,13 @@ enum STUserRequest: STRequest {
 
     var body: Data? {
         switch self {
+        case .signUp(let name, let email, let password):
+            let dict = [
+                "name": name,
+                "email": email,
+                "password": password
+            ]
+            return try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
         case .signin(let email, let password):
             let dict = [
                 "provider": "native",
@@ -47,6 +57,7 @@ enum STUserRequest: STRequest {
 
     var method: String {
         switch self {
+        case .signUp: return STHTTPMethod.POST.rawValue
         case .signin, .checkout: return STHTTPMethod.POST.rawValue
         case .profile: return STHTTPMethod.GET.rawValue
         }
@@ -54,6 +65,7 @@ enum STUserRequest: STRequest {
 
     var endPoint: String {
         switch self {
+        case .signUp: return "/user/signup"
         case .signin: return "/user/signin"
         case .checkout: return "/order/checkout"
         case .profile: return "/user/profile"

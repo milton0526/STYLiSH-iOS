@@ -138,6 +138,7 @@
 		C402F6582A2D759B0082FECB /* UploadProductBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790DB2A2B2B2000CFD37E /* UploadProductBasicCell.swift */; };
 		C402F65E2A2EDCA90082FECB /* HistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */; };
 		C402F6602A2EDF890082FECB /* HistoryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */; };
+		C402F6622A2F12D80082FECB /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F6612A2F12D80082FECB /* SignUpViewController.swift */; };
 		C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */; };
 		C4B4A5B92A2C573A00CD4C65 /* UploadProductDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */; };
 		C4B4A5BC2A2C5C7000CD4C65 /* UploadProductSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */; };
@@ -292,6 +293,7 @@
 		9180F5172A29DF33000D91AD /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryHeaderView.swift; sourceTree = "<group>"; };
 		C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFooterView.swift; sourceTree = "<group>"; };
+		C402F6612A2F12D80082FECB /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductDetailCell.swift; sourceTree = "<group>"; };
 		C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadProductDetailCell.xib; sourceTree = "<group>"; };
 		C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductSpecCell.swift; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 			isa = PBXGroup;
 			children = (
 				3CD9BB34223B882C0012C00D /* AuthViewController.swift */,
+				C402F6612A2F12D80082FECB /* SignUpViewController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -981,6 +984,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C402F6622A2F12D80082FECB /* SignUpViewController.swift in Sources */,
 				C402F6582A2D759B0082FECB /* UploadProductBasicCell.swift in Sources */,
 				3C0DD87822134EC100F5237E /* UIFont+Extension.swift in Sources */,
 				915790E22A2D8AD100CFD37E /* UploadProductBasicHeaderView.swift in Sources */,
