@@ -56,8 +56,8 @@ extension UIColor {
         )
     }
 
-    func hexStringFromColor(color: UIColor) -> String {
-        let components = color.cgColor.components
+    var hexStringFromColor: String {
+        let components = self.cgColor.components
         let red: CGFloat = components?[0] ?? 0.0
         let green: CGFloat = components?[1] ?? 0.0
         let blue: CGFloat = components?[2] ?? 0.0
@@ -68,5 +68,5 @@ extension UIColor {
             lroundf(Float(green * 255)),
             lroundf(Float(blue * 255)))
         return hexString
-     }
+    }
 }
