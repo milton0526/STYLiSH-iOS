@@ -50,7 +50,7 @@ class ProfileViewController: UIViewController {
                 LKProgressHUD.showFailure(text: "讀取資料失敗！")
             }
         })
-     }
+    }
     
     private func updateUser(_ user: User) {
         imageProfile.loadImage(user.picture, placeHolder: .asset(.Icons_36px_Profile_Normal))
@@ -170,8 +170,15 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        
-        let historyVC = HistoryViewController()
-        navigationController?.pushViewController(historyVC, animated: true)
+
+        let historyIcon = IndexPath(item: 8, section: 1)
+
+        if indexPath == historyIcon {
+            let historyVC = HistoryViewController()
+            navigationController?.pushViewController(historyVC, animated: true)
+        } else {
+            return
+        }
+
     }
 }

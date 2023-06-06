@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HistoryViewController: STBaseViewController {
+class HistoryViewController: UIViewController {
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -31,7 +31,7 @@ class HistoryViewController: STBaseViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
-        title = NSLocalizedString("購買記錄")
+        title = NSLocalizedString("購買紀錄")
 
         view.addSubview(tableView)
 
@@ -42,7 +42,21 @@ class HistoryViewController: STBaseViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
+        setupBackButton()
         fetchData()
+    }
+
+    private func setupBackButton() {
+        navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(
+            image: .asset(.Icons_24px_Back02),
+            style: .plain, target: self,
+            action: #selector(dismissView))
+        navigationItem.leftBarButtonItem = backButton
+    }
+
+    @objc func dismissView() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func fetchData() {

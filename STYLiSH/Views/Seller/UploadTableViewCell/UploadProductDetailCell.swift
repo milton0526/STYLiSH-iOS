@@ -111,6 +111,19 @@ class UploadProductDetailCell: UITableViewCell {
 
 // MARK: - UITextField Delegate
 extension UploadProductDetailCell: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        switch textField {
+        case _ where textField === textureTextField:
+            textureTextField.text = pickerViewData[0].data[0]
+        case _ where textField === washTextField:
+            washTextField.text = pickerViewData[1].data[0]
+        case _ where textField === countryTextField:
+            countryTextField.text = pickerViewData[2].data[0]
+        default:
+            break
+        }
+    }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         // pass data in each textField
         passData()

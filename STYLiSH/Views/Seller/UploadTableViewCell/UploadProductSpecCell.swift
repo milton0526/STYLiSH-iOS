@@ -80,6 +80,15 @@ class UploadProductSpecCell: UITableViewCell {
 
 // MARK: - UITextField Delegate
 extension UploadProductSpecCell: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        switch textField {
+        case _ where textField === sizeTextField:
+            sizeTextField.text = sizeData.data[0]
+        default:
+            break
+        }
+    }
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         checkUserInput()
     }
