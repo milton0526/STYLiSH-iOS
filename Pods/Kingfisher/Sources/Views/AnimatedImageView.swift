@@ -148,7 +148,7 @@ open class AnimatedImageView: UIImageView {
     }
 
     /// Delegate of this `AnimatedImageView` object. See `AnimatedImageViewDelegate` protocol for more.
-    public weak var delegateVC: AnimatedImageViewDelegate?
+    public weak var delegate: AnimatedImageViewDelegate?
 
     /// The `Animator` instance that holds the frames of a specific image in memory.
     public private(set) var animator: Animator?
@@ -194,6 +194,22 @@ open class AnimatedImageView: UIImageView {
             }
         }
     }
+
+// Workaround for Apple xcframework creating issue on Apple TV in Swift 5.8.
+// https://github.com/apple/swift/issues/66015
+#if os(tvOS)
+    public override init(image: UIImage?, highlightedImage: UIImage?) {
+        super.init(image: image, highlightedImage: highlightedImage)
+    }
+    
+    required public init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    init() {
+        super.init(frame: .zero)
+    }
+#endif
     
     deinit {
         if isDisplayLinkInitialized {
@@ -259,7 +275,7 @@ open class AnimatedImageView: UIImageView {
                 framePreloadCount: framePreloadCount,
                 repeatCount: repeatCount,
                 preloadQueue: preloadQueue)
-            animator.delegateVC = self
+            animator.delegate = self
             animator.needsPrescaling = needsPrescaling
             animator.backgroundDecode = backgroundDecode
             animator.prepareFramesAsynchronously()
@@ -286,7 +302,7 @@ open class AnimatedImageView: UIImageView {
 
         guard !animator.isFinished else {
             stopAnimating()
-            delegateVC?.animatedImageViewDidFinishAnimating(self)
+            delegate?.animatedImageViewDidFinishAnimating(self)
             return
         }
 
@@ -319,7 +335,7 @@ protocol AnimatorDelegate: AnyObject {
 
 extension AnimatedImageView: AnimatorDelegate {
     func animator(_ animator: Animator, didPlayAnimationLoops count: UInt) {
-        delegateVC?.animatedImageView(self, didPlayAnimationLoops: count)
+        delegate?.animatedImageView(self, didPlayAnimationLoops: count)
     }
 }
 
@@ -384,7 +400,7 @@ extension AnimatedImageView {
 
         var backgroundDecode = true
 
-        weak var delegateVC: AnimatorDelegate?
+        weak var delegate: AnimatorDelegate?
 
         // Total duration of one animation loop
         var loopDuration: TimeInterval = 0
@@ -472,6 +488,7 @@ extension AnimatedImageView {
         }
         
         deinit {
+            resetAnimatedFrames()
             GraphicsContext.end()
         }
 
@@ -544,14 +561,31 @@ extension AnimatedImageView {
             guard let cgImage = CGImageSourceCreateImageAtIndex(imageSource, index, options as CFDictionary?) else {
                 return nil
             }
-
-            let image = KFCrossPlatformImage(cgImage: cgImage)
             
-            guard let context = GraphicsContext.current(size: imageSize, scale: imageScale, inverting: true, cgImage: cgImage) else {
-                return image
+            if #available(iOS 15, tvOS 15, *) {
+                // From iOS 15, a plain image loading causes iOS calling `-[_UIImageCGImageContent initWithCGImage:scale:]`
+                // in ImageIO, which holds the image ref on the creating thread.
+                // To get a workaround, create another image ref and use that to create the final image. This leads to
+                // some performance loss, but there is little we can do.
+                // https://github.com/onevcat/Kingfisher/issues/1844
+                guard let context = GraphicsContext.current(size: imageSize, scale: imageScale, inverting: true, cgImage: cgImage),
+                      let decodedImageRef = cgImage.decoded(on: context, scale: imageScale)
+                else {
+                    return KFCrossPlatformImage(cgImage: cgImage)
+                }
+                
+                return KFCrossPlatformImage(cgImage: decodedImageRef)
+            } else {
+                let image = KFCrossPlatformImage(cgImage: cgImage)
+                if backgroundDecode {
+                    guard let context = GraphicsContext.current(size: imageSize, scale: imageScale, inverting: true, cgImage: cgImage) else {
+                        return image
+                    }
+                    return image.kf.decoded(on: context)
+                } else {
+                    return image
+                }
             }
-            
-            return backgroundDecode ? image.kf.decoded(on: context) : image
         }
         
         private func updatePreloadedFrames() {
@@ -559,7 +593,16 @@ extension AnimatedImageView {
                 return
             }
 
-            animatedFrames[previousFrameIndex] = animatedFrames[previousFrameIndex]?.placeholderFrame
+            let previousFrame = animatedFrames[previousFrameIndex]
+            animatedFrames[previousFrameIndex] = previousFrame?.placeholderFrame
+            // ensure the image dealloc in main thread
+            defer {
+                if let image = previousFrame?.image {
+                    DispatchQueue.main.async {
+                        _ = image
+                    }
+                }
+            }
 
             preloadIndexes(start: currentFrameIndex).forEach { index in
                 guard let currentAnimatedFrame = animatedFrames[index] else { return }
@@ -577,12 +620,12 @@ extension AnimatedImageView {
                     isFinished = true
 
                     // Notify the delegate here because the animation is stopping.
-                    delegateVC?.animator(self, didPlayAnimationLoops: currentRepeatCount)
+                    delegate?.animator(self, didPlayAnimationLoops: currentRepeatCount)
                 }
             } else if wasLastFrame {
 
                 // Notify the delegate that the loop completed
-                delegateVC?.animator(self, didPlayAnimationLoops: currentRepeatCount)
+                delegate?.animator(self, didPlayAnimationLoops: currentRepeatCount)
             }
         }
 
