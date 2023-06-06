@@ -9,11 +9,11 @@
 import Foundation
 
 struct UserObject: Codable {
-    let accessToken: String?
-    let data: User
+    let accessToken: String
+    let user: User
 
     enum CodingKeys: String, CodingKey {
-        case data
+        case user
         case accessToken = "access_token"
     }
 }

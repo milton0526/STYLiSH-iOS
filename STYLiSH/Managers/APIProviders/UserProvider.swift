@@ -97,10 +97,10 @@ class UserProvider {
             return completion(Result.failure(STYLiSHSignInError.noToken))
         }
 
-        guard let url = URL(string: "http://13.251.222.244/api/user/profile") else {
+        let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
+        guard let url = URL(string: "\(baseURL)/user/profile") else {
             return
         }
-        
 
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
@@ -118,7 +118,7 @@ class UserProvider {
             }
 
             do {
-                let result = try JSONDecoder().decode(UserObject.self, from: data)
+                let result = try JSONDecoder().decode(STSuccessParser<User>.self, from: data)
                 DispatchQueue.main.async {
                     completion(.success(result.data))
                 }

@@ -50,7 +50,7 @@ class ProfileViewController: UIViewController {
                 LKProgressHUD.showFailure(text: "讀取資料失敗！")
             }
         })
-    }
+     }
     
     private func updateUser(_ user: User) {
         imageProfile.loadImage(user.picture, placeHolder: .asset(.Icons_36px_Profile_Normal))
