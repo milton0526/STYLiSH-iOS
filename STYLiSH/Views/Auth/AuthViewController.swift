@@ -48,7 +48,23 @@ class AuthViewController: STBaseViewController {
 //    }
 
     @IBAction func signUpButtonAction(_ sender: UIButton) {
+        let authStoryBoard = UIStoryboard(name: "Auth", bundle: nil)
+        guard let signUpVC = authStoryBoard.instantiateViewController(withIdentifier: "SignUp") as? SignUpViewController else {
+            return
+        }
 
+        if #available(iOS 16.0, *) {
+            if let sheetVC = signUpVC.sheetPresentationController {
+                sheetVC.detents = [.custom(resolver: { context in
+                    context.maximumDetentValue * 0.5
+                })]
+
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+        signUpVC.isModalInPresentation = true
+        present(signUpVC, animated: true)
     }
 
     @IBAction func onSTYLiSHSignIn(_ sender: UIButton) {

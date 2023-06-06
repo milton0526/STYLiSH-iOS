@@ -22,6 +22,23 @@ enum STYLiSHSignInError: Error {
 
 class UserProvider {
 
+    func signUpToSTYLiSH(name: String, email: String, password: String, completion: @escaping (Result<Void>) -> Void) {
+        HTTPClient.shared.request(STUserRequest.signUp(name: name, email: email, password: password), completion: { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let userObject = try JSONDecoder().decode(STSuccessParser<UserObject>.self, from: data)
+                    KeyChainManager.shared.token = userObject.data.accessToken
+                    completion(Result.success(()))
+                } catch {
+                    completion(Result.failure(error))
+                }
+            case .failure(let error):
+                completion(Result.failure(error))
+            }
+        })
+    }
+
     func signInToSTYLiSH(email: String, password: String, completion: @escaping (Result<Void>) -> Void) {
         HTTPClient.shared.request(STUserRequest.signin(email: email, password: password), completion: { result in
             switch result {

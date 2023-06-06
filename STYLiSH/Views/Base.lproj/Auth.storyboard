@@ -6,8 +6,14 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="TimesNewRoman.ttf">
+            <string>.SFUI-Semibold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Auth View Controller-->
         <scene sceneID="MYP-py-3HF">
@@ -174,12 +180,159 @@
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="27.436281859070466"/>
         </scene>
+        <!--Sign Up View Controller-->
+        <scene sceneID="PYp-7m-ciO">
+            <objects>
+                <viewController storyboardIdentifier="SignUp" id="Jpp-7O-3Bv" customClass="SignUpViewController" customModule="STYLiSH" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5XB-d1-eRo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rhC-0w-xM4">
+                                <rect key="frame" x="331" y="20" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Lt8-NN-f3P"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="fgP-Bk-HFF"/>
+                                </constraints>
+                                <state key="normal" image="Icons_24px_Close"/>
+                                <connections>
+                                    <action selector="dismissButtonClicked:" destination="Jpp-7O-3Bv" eventType="touchUpInside" id="Pyt-Ni-yLT"/>
+                                    <action selector="dismissView:" destination="ZYD-N5-aSi" eventType="touchUpInside" id="65f-aC-RPY"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="34" translatesAutoresizingMaskIntoConstraints="NO" id="bff-eE-iGa">
+                                <rect key="frame" x="20" y="82" width="335" height="176"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="foI-Wa-ROQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="36"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="姓名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4l-gp-Wx0">
+                                                <rect key="frame" x="0.0" y="0.0" width="37" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <color key="textColor" name="B1"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0cr-nr-tG5" customClass="STOrderUserInputTextField" customModule="STYLiSH" customModuleProvider="target">
+                                                <rect key="frame" x="62" y="0.0" width="273" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="hRg-Jb-dFi"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="8Z4-tU-IeW">
+                                        <rect key="frame" x="0.0" y="70" width="335" height="36"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="信箱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9o-6E-7Fz">
+                                                <rect key="frame" x="0.0" y="0.0" width="37" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <color key="textColor" name="B1"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dt0-0Q-eZa" customClass="STOrderUserInputTextField" customModule="STYLiSH" customModuleProvider="target">
+                                                <rect key="frame" x="62" y="0.0" width="273" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="ccD-PH-S06"/>
+                                        </constraints>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="ovI-Cp-OfS">
+                                        <rect key="frame" x="0.0" y="140" width="335" height="36"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="密碼" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eDb-ba-79S">
+                                                <rect key="frame" x="0.0" y="0.0" width="37" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <color key="textColor" name="B1"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JdF-Zd-fGt" customClass="STOrderUserInputTextField" customModule="STYLiSH" customModuleProvider="target">
+                                                <rect key="frame" x="62" y="0.0" width="273" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="7Cy-N6-NZr"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fje-tS-eIb">
+                                <rect key="frame" x="16" y="282" width="343" height="1"/>
+                                <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="gyU-xb-MCu"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ExU-0i-eSi">
+                                <rect key="frame" x="16" y="299" width="343" height="48"/>
+                                <color key="backgroundColor" name="B1"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="RdD-YR-mCE"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="註冊"/>
+                                <connections>
+                                    <action selector="onSTYLiSHSignIn:" destination="ZYD-N5-aSi" eventType="touchUpInside" id="IlK-xH-5ov"/>
+                                    <action selector="signUpButtonClicked:" destination="Jpp-7O-3Bv" eventType="touchUpInside" id="Tgl-uh-ypJ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="會員基本資訊" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lO-01-iSl">
+                                <rect key="frame" x="133.5" y="22" width="108" height="20"/>
+                                <fontDescription key="fontDescription" name=".SFUI-Semibold" family=".AppleSystemUIFont" pointSize="18"/>
+                                <color key="textColor" name="B1"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="MqJ-Iy-H7d"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bff-eE-iGa" firstAttribute="leading" secondItem="MqJ-Iy-H7d" secondAttribute="leading" constant="20" id="2Wb-Z0-bOb"/>
+                            <constraint firstItem="MqJ-Iy-H7d" firstAttribute="trailing" secondItem="bff-eE-iGa" secondAttribute="trailing" constant="20" id="2YS-vx-4gd"/>
+                            <constraint firstItem="fje-tS-eIb" firstAttribute="top" secondItem="bff-eE-iGa" secondAttribute="bottom" constant="24" id="8kG-xU-uvL"/>
+                            <constraint firstItem="9lO-01-iSl" firstAttribute="centerX" secondItem="5XB-d1-eRo" secondAttribute="centerX" id="E94-a6-Srh"/>
+                            <constraint firstItem="rhC-0w-xM4" firstAttribute="top" secondItem="MqJ-Iy-H7d" secondAttribute="top" constant="20" id="EnB-BK-bQd"/>
+                            <constraint firstItem="fje-tS-eIb" firstAttribute="trailing" secondItem="5XB-d1-eRo" secondAttribute="trailingMargin" id="FCl-du-zHg"/>
+                            <constraint firstItem="MqJ-Iy-H7d" firstAttribute="trailing" secondItem="rhC-0w-xM4" secondAttribute="trailing" constant="20" id="Fr7-VR-ZG7"/>
+                            <constraint firstItem="fje-tS-eIb" firstAttribute="leading" secondItem="5XB-d1-eRo" secondAttribute="leadingMargin" id="IZz-xl-Sc2"/>
+                            <constraint firstItem="ExU-0i-eSi" firstAttribute="leading" secondItem="MqJ-Iy-H7d" secondAttribute="leading" constant="16" id="MXJ-PO-c5n"/>
+                            <constraint firstItem="MqJ-Iy-H7d" firstAttribute="trailing" secondItem="ExU-0i-eSi" secondAttribute="trailing" constant="16" id="NVy-DR-y4R"/>
+                            <constraint firstItem="9lO-01-iSl" firstAttribute="centerY" secondItem="rhC-0w-xM4" secondAttribute="centerY" id="UfB-ql-SEw"/>
+                            <constraint firstItem="bff-eE-iGa" firstAttribute="top" secondItem="9lO-01-iSl" secondAttribute="bottom" constant="40" id="ax4-Mb-bOt"/>
+                            <constraint firstItem="ExU-0i-eSi" firstAttribute="top" secondItem="fje-tS-eIb" secondAttribute="bottom" constant="16" id="gNy-yn-FGV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="dt0-0Q-eZa" id="VqS-0e-yMH"/>
+                        <outlet property="nameTextField" destination="0cr-nr-tG5" id="XiP-K9-ScV"/>
+                        <outlet property="passwordTextField" destination="JdF-Zd-fGt" id="tic-Ye-l2X"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ih9-o7-iye" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="886" y="19"/>
+        </scene>
     </scenes>
     <designables>
+        <designable name="0cr-nr-tG5">
+            <size key="intrinsicContentSize" width="32" height="34"/>
+        </designable>
         <designable name="IWh-Ia-fF4">
             <size key="intrinsicContentSize" width="32" height="34"/>
         </designable>
+        <designable name="JdF-Zd-fGt">
+            <size key="intrinsicContentSize" width="32" height="34"/>
+        </designable>
         <designable name="cmz-KH-Ovq">
+            <size key="intrinsicContentSize" width="32" height="34"/>
+        </designable>
+        <designable name="dt0-0Q-eZa">
             <size key="intrinsicContentSize" width="32" height="34"/>
         </designable>
     </designables>
@@ -188,5 +341,8 @@
         <namedColor name="B1">
             <color red="0.24705882352941178" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
