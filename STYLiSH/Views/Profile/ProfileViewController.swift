@@ -38,6 +38,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchData()
+        setSellerIcon()
     }
 
     // MARK: - Action
@@ -52,12 +53,40 @@ class ProfileViewController: UIViewController {
         })
     }
     
+    private func setSellerIcon() {
+        let setSellerIcon = UIImage.asset(.house_lodge_fill)
+        let setSellerButton = UIBarButtonItem(image: setSellerIcon, style: .plain, target: self, action: #selector(sellerButtonTapped))
+        setSellerButton.width = 28
+        setSellerButton.tintColor = UIColor(hex: "3F3A3A")
+        navigationItem.leftBarButtonItem = setSellerButton
+    }
+    
     private func updateUser(_ user: User) {
         imageProfile.loadImage(user.picture, placeHolder: .asset(.Icons_36px_Profile_Normal))
         
         labelName.text = user.name
         labelInfo.text = user.getUserInfo()
         labelInfo.isHidden = false
+    }
+    
+    @objc private func sellerButtonTapped() {
+        let alert = UIAlertController(title: "進入我的賣場", message: nil, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "返回", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+        
+        let confirmAction = UIAlertAction(title: "確定", style: .default) { [weak self]_ in
+            let sellerVC = SellerProductViewController()
+            let navVC = UINavigationController(rootViewController: sellerVC)
+            navVC.modalPresentationStyle = .fullScreen
+            self?.present(navVC, animated: true)
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(confirmAction)
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 

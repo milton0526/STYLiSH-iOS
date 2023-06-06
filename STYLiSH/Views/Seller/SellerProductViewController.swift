@@ -10,8 +10,7 @@ import UIKit
 import Alamofire
 
 class SellerProductViewController: STBaseViewController {
-    
-    
+
     lazy var selectionView: SelectionView = {
         let selectionView = SelectionView()
         selectionView.dataSource = self
@@ -77,7 +76,7 @@ class SellerProductViewController: STBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        title = NSLocalizedString("賣家中心")
+//        title = NSLocalizedString("賣家中心")
         setupCloseButton()
         setupConfirmView()
         setupConfirmConstraint()
@@ -161,70 +160,13 @@ class SellerProductViewController: STBaseViewController {
         present(colorPickerView, animated: true)
     }
     
-    //    @objc private func uploadProduct() {
-    //        let dicCount = variants.count
-    //        let colorCodes = variants.map { $0.value.colorCode }
-    //        let sizes = variants.map { $0.value.size }
-    //        let stocksInt = variants.map { $0.value.stock }
-    //        let stocksString = stocksInt.map { String($0) }
-    //
-    //        guard let uploadBasicData = uploadBasicData,
-    //              let uploadDetailData = uploadDetailData
-    //        else {
-    //            return
-    //        }
-    //        let product = SellerProduct(
-    //            title: uploadBasicData.productTitle,
-    //            price: uploadDetailData.price,
-    //            category: uploadBasicData.categoryButton,
-    //            description: uploadBasicData.productDescription,
-    //            story: uploadBasicData.productDescription,
-    //            texture: uploadDetailData.texture,
-    //            wash: uploadDetailData.wash,
-    //            place: uploadDetailData.contry,
-    //            note: "沒有給使用者填寫",
-    //            mainImage: uploadBasicData.images.image1,
-    //            images: [uploadBasicData.images.image1, uploadBasicData.images.image2],
-    //            size: sizes,
-    //            stock: stocksString,
-    //            color: colorCodes,
-    //            colorName: colorCodes
-    //        )
-    //
-    //        guard let url = URL(string: "http://18.138.32.11/api/product") else {
-    //            fatalError("Invalid URL")
-    //        }
-    //
-    //        let encoder = JSONEncoder()
-    //        guard let jsonData = try? encoder.encode(product) else {
-    //            fatalError("Failed to encode product data")
-    //        }
-    //
-    //        var request = URLRequest(url: url)
-    //        request.httpMethod = "POST"
-    //        request.allHTTPHeaderFields = ["Authorization": KeyChainManager.shared.token ?? ""]
-    //        request.httpBody = jsonData
-    //
-    //        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-    //            if let error = error {
-    //                print("Error sending request: \(error)")
-    //                return
-    //            }
-    //
-    //            if let data = data {
-    //                // 处理服务器响应
-    //                if let responseString = String(data: data, encoding: .utf8) {
-    //                    print("Response: \(responseString)")
-    //                }
-    //            }
-    //        }
-    //        task.resume()
-    //    }
-    
     @objc private func uploadProduct() {
-        let urlString = "http://18.138.32.11/api/product"
-        guard let url = URL(string: urlString) else {
-            // Handle invalid URL error
+//        if specSectionRows != 0
+        var responseFromServer = 0
+        confirmButton.isUserInteractionEnabled = false
+        confirmButton.backgroundColor = UIColor(hex: "7D7676")
+        let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
+        guard let url = URL(string: "\(baseURL)/product") else {
             return
         }
         let dicCount = variants.count
@@ -237,27 +179,6 @@ class SellerProductViewController: STBaseViewController {
               let uploadDetailData = uploadDetailData
         else {
             return
-        }
-        
-        let product = SellerProduct(
-            title: uploadBasicData.productTitle,
-            price: uploadDetailData.price,
-            category: uploadBasicData.categoryButton,
-            description: uploadBasicData.productDescription,
-            story: uploadBasicData.productDescription,
-            texture: uploadDetailData.texture,
-            wash: uploadDetailData.wash,
-            place: uploadDetailData.contry,
-            note: "沒有給使用者填寫",
-            size: sizes,
-            stock: stocksString,
-            color: colorCodes,
-            colorName: colorCodes
-        )
-        
-        let encoder = JSONEncoder()
-        guard let jsonData = try? encoder.encode(product) else {
-            fatalError("Failed to encode product data")
         }
         
         let temporaryToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI0LCJpYXQiOjE2ODYwMjk5NDUsImV4cCI6MTY4NjM3NTU0NX0.WzJWe4MifkQCFGQLqf0uEUobWq1i8MToajL4bWlgpBU"
@@ -291,27 +212,20 @@ class SellerProductViewController: STBaseViewController {
             for (key, value) in stringParameter {
                 multipartFormData.append(Data(value.utf8), withName: key)
             }
-            
-            
+
             for (key, value) in stringArrayParameter {
                 for index in value.indices {
                     multipartFormData.append(Data(value[index].utf8), withName: key)
                 }
             }
-            
         }, to: url, headers: headers)
         .validate()
         .response { response in
             switch response.result {
             case .success(let value):
-                print("Image uploaded successfully: (value)")
+                print("Image uploaded successfully: \(value)")
+                responseFromServer = response.response!.statusCode
             case .failure(let error):
-                // Handle the error response
-                print(response.response?.headers)
-                print(response.response?.url)
-                print(response.response?.allHeaderFields)
-                print(response.response?.statusCode)
-                
                 if let statusCode = response.response?.statusCode {
                     switch statusCode {
                     case 400..<500:
@@ -319,6 +233,7 @@ class SellerProductViewController: STBaseViewController {
                         // Handle client-side errors (4xx)
                     case 500..<600:
                         print("Server error: \(statusCode)")
+                        print(response)
                         // Handle server-side errors (5xx)
                     default:
                         print("Unexpected status code: \(statusCode)")
@@ -327,6 +242,10 @@ class SellerProductViewController: STBaseViewController {
                     print("Image upload failed: \(error)")
                 }
             }
+        }
+        if responseFromServer == 200 {
+            confirmButton.isUserInteractionEnabled = true
+            confirmButton.backgroundColor = UIColor(hex: "3F3A3A")
         }
     }
 }
@@ -598,6 +517,5 @@ extension SellerProductViewController: UploadProductDetailCellDelegate {
     func detailCellData(from cell: UploadProductDetailCell, data: UploadDetailCellModel) {
         cell.delegate = self
         uploadDetailData = data
-        print(uploadDetailData)
     }
 }
