@@ -41,7 +41,6 @@ class SellerProductViewController: STBaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = true
-        tableView.allowsSelection = false
         tableView.separatorStyle = .none
         tableView.register(
             UINib(nibName: String(describing: UploadProductDetailCell.self), bundle: nil),
@@ -496,6 +495,28 @@ extension SellerProductViewController: UITableViewDataSource {
         }
         
     }
+
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        switch indexPath.section {
+        case 1:
+            let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] (_, _, completionHandler) in
+                // delete the item here
+                self?.specSectionRows -= 1
+                self?.variants.removeValue(forKey: indexPath)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                completionHandler(true)
+            }
+            deleteAction.image = UIImage(systemName: "trash")
+            deleteAction.backgroundColor = .systemRed
+            let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+            return configuration
+        default:
+            return nil
+        }
+    }
+
 }
 
 // MARK: - Spec cell Delegate {
@@ -520,7 +541,9 @@ extension SellerProductViewController: UploadProductSpecCellDelegate {
 
 // MARK: UITable view delegate
 extension SellerProductViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 // MARK: - ColorPickerView Delegate
