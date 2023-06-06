@@ -102,12 +102,12 @@ class HistoryTableViewCell: UITableViewCell {
         ])
     }
 
-    func configure(with text: String) {
-        productImageView.image = .asset(.Image_Placeholder)
-        productIdLabel.text = text
-        productTitleLabel.text = text
-        amountLabel.text = "x1"
-        sizeLabel.text = "M"
-        colorView.backgroundColor = .green
+    func configure(with product: OrderProduct) {
+        productImageView.loadImage(product.image)
+        productIdLabel.text = "\(product.orderId)"
+        productTitleLabel.text = product.productTitle
+        amountLabel.text = "x \(product.quantity)"
+        sizeLabel.text = product.size
+        colorView.backgroundColor = UIColor.hexStringToUIColor(hex: product.colorName)
     }
 }

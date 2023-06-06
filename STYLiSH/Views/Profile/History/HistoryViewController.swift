@@ -19,6 +19,11 @@ class HistoryViewController: STBaseViewController {
         return tableView
     }()
 
+    private let userProvider = UserProvider()
+    private var orderRecord: [OrderRecord] = [] {
+        didSet { tableView.reloadData() }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +38,20 @@ class HistoryViewController: STBaseViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+
+        fetchData()
     }
+
+    private func fetchData() {
+        userProvider.getUserProfile(completion: { [weak self] result in
+            switch result {
+            case .success(let user):
+                self?.orderRecord = user.orderRecord ?? []
+            case .failure:
+                LKProgressHUD.showFailure(text: "讀取資料失敗！")
+            }
+        })
+     }
 
 }
 
@@ -44,11 +62,14 @@ extension HistoryViewController: UITableViewDelegate {
     }
 }
 
-
 // MARK: - Table view dataSource
 extension HistoryViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        orderRecord.count
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return orderRecord[section].products.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -56,8 +77,8 @@ extension HistoryViewController: UITableViewDataSource {
             fatalError("Failed to dequeue cell.")
         }
 
-        let text = "hello"
-        cell.configure(with: text)
+        let product = orderRecord[indexPath.section].products[indexPath.row]
+        cell.configure(with: product)
         return cell
     }
 }
