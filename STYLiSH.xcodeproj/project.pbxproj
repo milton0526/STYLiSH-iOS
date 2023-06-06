@@ -136,6 +136,8 @@
 		915790E62A2DF8D800CFD37E /* UploadDetailCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790E52A2DF8D800CFD37E /* UploadDetailCellModel.swift */; };
 		9180F5182A29DF33000D91AD /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9180F5172A29DF33000D91AD /* FloatingButton.swift */; };
 		C402F6582A2D759B0082FECB /* UploadProductBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915790DB2A2B2B2000CFD37E /* UploadProductBasicCell.swift */; };
+		C402F65E2A2EDCA90082FECB /* HistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */; };
+		C402F6602A2EDF890082FECB /* HistoryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */; };
 		C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */; };
 		C4B4A5B92A2C573A00CD4C65 /* UploadProductDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */; };
 		C4B4A5BC2A2C5C7000CD4C65 /* UploadProductSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */; };
@@ -288,6 +290,8 @@
 		915790E32A2DC80700CFD37E /* UploadBasicCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadBasicCellModel.swift; sourceTree = "<group>"; };
 		915790E52A2DF8D800CFD37E /* UploadDetailCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDetailCellModel.swift; sourceTree = "<group>"; };
 		9180F5172A29DF33000D91AD /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
+		C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryHeaderView.swift; sourceTree = "<group>"; };
+		C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFooterView.swift; sourceTree = "<group>"; };
 		C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductDetailCell.swift; sourceTree = "<group>"; };
 		C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadProductDetailCell.xib; sourceTree = "<group>"; };
 		C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductSpecCell.swift; sourceTree = "<group>"; };
@@ -751,8 +755,10 @@
 		915790C02A2B137900CFD37E /* History */ = {
 			isa = PBXGroup;
 			children = (
-				915790C12A2B137900CFD37E /* HistoryTableViewCell.swift */,
 				915790C22A2B137900CFD37E /* HistoryViewController.swift */,
+				915790C12A2B137900CFD37E /* HistoryTableViewCell.swift */,
+				C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */,
+				C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -1021,6 +1027,7 @@
 				3CC7061A2216B36800CAD850 /* ProductCollectionViewCell.swift in Sources */,
 				3CED4C0F2214222A00121D4B /* STParser.swift in Sources */,
 				3CED4C0A2214192100121D4B /* Product.swift in Sources */,
+				C402F6602A2EDF890082FECB /* HistoryFooterView.swift in Sources */,
 				3C33691A2227D20B008A5A7A /* UIView+Extension.swift in Sources */,
 				3CB8011E22299B460029A552 /* STCompondViewController.swift in Sources */,
 				3CCB3BC4222AA8FD00976A1C /* ProductDetailViewController.swift in Sources */,
@@ -1031,6 +1038,7 @@
 				3C3369162227CE7D008A5A7A /* TrolleyProductBaseView.swift in Sources */,
 				C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */,
 				915790E62A2DF8D800CFD37E /* UploadDetailCellModel.swift in Sources */,
+				C402F65E2A2EDCA90082FECB /* HistoryHeaderView.swift in Sources */,
 				3CE7A50222302354009FF003 /* ProductContentCategory.swift in Sources */,
 				3C6020E8222BBA3C00312958 /* ProductBasicCell.swift in Sources */,
 				3CE7A51522305E5A009FF003 /* KeyChainManager.swift in Sources */,

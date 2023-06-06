@@ -15,7 +15,10 @@ class HistoryViewController: STBaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorStyle = .none
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
+        tableView.register(HistoryHeaderView.self, forHeaderFooterViewReuseIdentifier: HistoryHeaderView.identifier)
+        tableView.register(HistoryFooterView.self, forHeaderFooterViewReuseIdentifier: HistoryFooterView.identifier)
         return tableView
     }()
 
@@ -59,6 +62,36 @@ class HistoryViewController: STBaseViewController {
 extension HistoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         110
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: HistoryHeaderView.identifier) as? HistoryHeaderView
+        else {
+            return nil
+        }
+        let orderID = orderRecord[section].number
+        headerView.titleLabel.text = "訂單編號: \(orderID)"
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let footerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: HistoryFooterView.identifier) as? HistoryFooterView
+        else {
+            return nil
+        }
+        let total = orderRecord[section].total
+        footerView.priceLabel.text = "$ \(total)"
+        return footerView
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        50
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        50
     }
 }
 
