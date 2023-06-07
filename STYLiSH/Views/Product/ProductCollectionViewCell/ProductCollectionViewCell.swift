@@ -21,11 +21,16 @@ class ProductCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var productTitleLbl: UILabel!
 
     @IBOutlet weak var productPriceLbl: UILabel!
+    
+    var longPressGesture: UILongPressGestureRecognizer!
+    var magnifiedImageView: UIImageView!
+    var magnifiedWindow: UIWindow!
 
     let deleteButton = UIButton()
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        gestureForProductImg()
     }
 
     func layoutCell(image: String, title: String, price: Int) {
@@ -50,5 +55,77 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     @objc func deleteProduct() {
         delegate?.buttonPressed(from: self)
+    }
+    
+    func gestureForProductImg() {
+        // 建立長按手勢辨識器
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        
+        productImg.addGestureRecognizer(longPressGesture)
+        productImg.isUserInteractionEnabled = true
+        
+        magnifiedImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 375, height: 500))
+        magnifiedImageView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        magnifiedImageView.contentMode = .scaleAspectFit
+        magnifiedImageView.clipsToBounds = true
+//        magnifiedImageView.isHidden = true
+        
+        // 建立放大視窗
+        magnifiedWindow = UIWindow(frame: UIScreen.main.bounds)
+        let backViewColor =  UIColor(hex: "DAD5D4")
+        let transparentBackViewColor = backViewColor.withAlphaComponent(0.8)
+        magnifiedWindow.backgroundColor = transparentBackViewColor
+        magnifiedWindow.windowLevel = UIWindow.Level.alert
+//        magnifiedWindow.isHidden = true
+        magnifiedWindow.addSubview(magnifiedImageView)
+    }
+
+    @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            // 在長按手勢開始時顯示放大的圖片和視窗
+            magnifyImage(gesture.location(in: productImg))
+        } else if gesture.state == .changed {
+//            // 更新放大的圖片和視窗的位置
+//            updateMagnifiedImagePosition(gesture.location(in: productImg))
+        } else if gesture.state == .ended || gesture.state == .cancelled {
+            // 在長按手勢結束時隱藏放大的圖片和視窗
+            hideMagnifiedImage()
+        }
+    }
+
+    func magnifyImage(_ location: CGPoint) {
+        // Set the magnified image
+        magnifiedImageView.image = productImg.image
+        magnifiedImageView.layer.cornerRadius = 10
+        magnifiedImageView.clipsToBounds = true
+        magnifiedImageView.contentMode = .scaleAspectFill
+        magnifiedImageView.backgroundColor = UIColor.clear
+        
+        // Calculate the position and size of the magnified image
+        let magnifiedImageSize = CGSize(width: 375, height: 500)
+        let magnifiedImageOrigin = CGPoint(x: 7, y: 172)
+        magnifiedImageView.frame = CGRect(origin: magnifiedImageOrigin, size: magnifiedImageSize)
+        
+        // Show the magnified image and window with animation
+        magnifiedImageView.alpha = 0.0
+        magnifiedWindow.alpha = 0.0
+        magnifiedImageView.isHidden = false
+        magnifiedWindow.isHidden = false
+        
+        // Add vibration feedback
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+        feedbackGenerator.prepare()
+        feedbackGenerator.impactOccurred()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.magnifiedImageView.alpha = 1.0
+            self.magnifiedWindow.alpha = 1.0
+        }
+    }
+
+    func hideMagnifiedImage() {
+        // 隱藏放大的圖片和視窗
+        magnifiedImageView.isHidden = true
+        magnifiedWindow.isHidden = true
     }
 }
