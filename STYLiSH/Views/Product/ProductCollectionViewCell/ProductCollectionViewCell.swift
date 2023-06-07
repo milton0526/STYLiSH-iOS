@@ -35,16 +35,16 @@ class ProductCollectionViewCell: UICollectionViewCell {
     }
     
     func deletionButton() {
-        deleteButton.setImage(UIImage.asset(.icons_deletion), for: .normal)
+        deleteButton.setImage(UIImage.asset(.Icons_Throw_Away), for: .normal)
         deleteButton.addTarget(self, action: #selector(deleteProduct), for: .touchUpInside)
         addSubview(deleteButton)
         bringSubviewToFront(deleteButton)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            deleteButton.topAnchor.constraint(equalTo: topAnchor),
-            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            deleteButton.widthAnchor.constraint(equalToConstant: 32),
-            deleteButton.heightAnchor.constraint(equalToConstant: 32)
+            deleteButton.centerXAnchor.constraint(equalTo: productImg.centerXAnchor),
+            deleteButton.centerYAnchor.constraint(equalTo: productImg.centerYAnchor),
+            deleteButton.widthAnchor.constraint(equalToConstant: 54),
+            deleteButton.heightAnchor.constraint(equalToConstant: 54)
         ])
     }
     

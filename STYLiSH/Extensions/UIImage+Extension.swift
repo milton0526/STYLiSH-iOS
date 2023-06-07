@@ -66,6 +66,7 @@ enum ImageAsset: String {
     case Image_Search
     case icons_deletion
     case Image_Search_selected
+    case Icons_Throw_Away
 }
 // swiftlint:enable identifier_name
 
