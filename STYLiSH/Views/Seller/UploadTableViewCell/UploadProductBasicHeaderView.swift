@@ -40,9 +40,9 @@ class UploadProductBasicHeaderView: UITableViewHeaderFooterView {
         }
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
         ])
     }
 }

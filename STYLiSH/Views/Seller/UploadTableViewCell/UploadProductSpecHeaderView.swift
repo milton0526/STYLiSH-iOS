@@ -51,9 +51,9 @@ class UploadProductSpecHeaderView: UITableViewHeaderFooterView {
         }
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
 
             addSpecButton.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 16),
             addSpecButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),

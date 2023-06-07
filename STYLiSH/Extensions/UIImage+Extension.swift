@@ -59,7 +59,8 @@ enum ImageAsset: String {
     // Close button
     case Icons_24px_Close
     
-    case Image_24px_Floating
+    // Seller button
+    case house_lodge_fill
 }
 // swiftlint:enable identifier_name
 

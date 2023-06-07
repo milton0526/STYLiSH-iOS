@@ -10,6 +10,7 @@ import UIKit
 
 protocol UploadProductDetailCellDelegate: AnyObject {
     func detailCellData(from cell: UploadProductDetailCell, data: UploadDetailCellModel)
+    func removeData(_ cell: UploadProductDetailCell)
 }
 
 struct PickerModel {
@@ -95,6 +96,7 @@ class UploadProductDetailCell: UITableViewCell {
               !contryText.isEmpty,
               !priceText.isEmpty
         else {
+            delegate?.removeData(self)
             return
         }
         

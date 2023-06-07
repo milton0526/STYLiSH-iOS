@@ -39,16 +39,6 @@ class STTabBarViewController: UITabBarController {
         StorageManager.shared.fetchOrders()
         
         delegate = self
-        
-        buttonSetting()
-    }
-    
-    func buttonSetting() {
-        let xPoint = ((view.frame.width) / 60) * 26.2
-        let yPoint = ((view.frame.height) / 40) * 34.5
-        let floatingButton = FloatingButton(frame: CGRect(x: xPoint, y: yPoint, width: 45, height: 45))
-        floatingButton.addTarget(self, action: #selector(sellerMode), for: .touchUpInside)
-        self.view.addSubview(floatingButton)
     }
 }
 
