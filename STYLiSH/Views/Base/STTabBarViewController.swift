@@ -10,7 +10,7 @@ import UIKit
 
 class STTabBarViewController: UITabBarController {
 
-    private let tabs: [Tab] = [.lobby, .product, .trolley, .profile]
+    private let tabs: [Tab] = [.lobby, .product, .search, .trolley, .profile]
     
     private var trolleyTabBarItem: UITabBarItem?
     
@@ -49,6 +49,7 @@ extension STTabBarViewController {
         case product
         case profile
         case trolley
+        case search
 
         func makeViewController() -> UIViewController {
             let controller: UIViewController
@@ -57,6 +58,7 @@ extension STTabBarViewController {
             case .product: controller = UIStoryboard.product.instantiateInitialViewController()!
             case .profile: controller = UIStoryboard.profile.instantiateInitialViewController()!
             case .trolley: controller = UIStoryboard.trolley.instantiateInitialViewController()!
+            case .search: controller = UIStoryboard.search.instantiateInitialViewController()!
             }
             controller.tabBarItem = makeTabBarItem()
             controller.tabBarItem.imageInsets = UIEdgeInsets(top: 6.0, left: 0.0, bottom: -6.0, right: 0.0)
@@ -77,6 +79,8 @@ extension STTabBarViewController {
                 return .asset(.Icons_36px_Cart_Normal)
             case .profile:
                 return .asset(.Icons_36px_Profile_Normal)
+            case .search:
+                return .asset(.Image_Search)
             }
         }
         
@@ -90,6 +94,8 @@ extension STTabBarViewController {
                 return .asset(.Icons_36px_Cart_Selected)
             case .profile:
                 return .asset(.Icons_36px_Profile_Selected)
+            case .search:
+                return .asset(.Image_Search)
             }
         }
     }

@@ -140,6 +140,8 @@
 		C402F65E2A2EDCA90082FECB /* HistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */; };
 		C402F6602A2EDF890082FECB /* HistoryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */; };
 		C402F6622A2F12D80082FECB /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F6612A2F12D80082FECB /* SignUpViewController.swift */; };
+		C41DFFBD2A301BBD00B2F283 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C41DFFBC2A301BBD00B2F283 /* Search.storyboard */; };
+		C41DFFC02A301D4600B2F283 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41DFFBF2A301D4600B2F283 /* SearchViewController.swift */; };
 		C4B4A5B82A2C573A00CD4C65 /* UploadProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */; };
 		C4B4A5B92A2C573A00CD4C65 /* UploadProductDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */; };
 		C4B4A5BC2A2C5C7000CD4C65 /* UploadProductSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */; };
@@ -296,6 +298,8 @@
 		C402F65D2A2EDCA90082FECB /* HistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryHeaderView.swift; sourceTree = "<group>"; };
 		C402F65F2A2EDF890082FECB /* HistoryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFooterView.swift; sourceTree = "<group>"; };
 		C402F6612A2F12D80082FECB /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		C41DFFBC2A301BBD00B2F283 /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
+		C41DFFBF2A301D4600B2F283 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C4B4A5B62A2C573A00CD4C65 /* UploadProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductDetailCell.swift; sourceTree = "<group>"; };
 		C4B4A5B72A2C573A00CD4C65 /* UploadProductDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadProductDetailCell.xib; sourceTree = "<group>"; };
 		C4B4A5BA2A2C5C7000CD4C65 /* UploadProductSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProductSpecCell.swift; sourceTree = "<group>"; };
@@ -602,6 +606,7 @@
 				3CC706132216B32700CAD850 /* Product */,
 				3C1ACFE722152D10005583E2 /* Profile */,
 				3C0DD87B2213531400F5237E /* Lobby */,
+				C41DFFBE2A301D2800B2F283 /* Search */,
 				9180F5162A29DECE000D91AD /* Seller */,
 				3CD29125221135E3008B8A2D /* LaunchScreen.storyboard */,
 				3CED80922301204200B7DA8E /* Auth.storyboard */,
@@ -609,6 +614,7 @@
 				3CED80A3230124DD00B7DA8E /* Product.storyboard */,
 				3CD29120221135E2008B8A2D /* Main.storyboard */,
 				3CED80A82301256200B7DA8E /* Profile.storyboard */,
+				C41DFFBC2A301BBD00B2F283 /* Search.storyboard */,
 				3CED80B12301301300B7DA8E /* Trolley.storyboard */,
 			);
 			path = Views;
@@ -790,6 +796,14 @@
 			path = Seller;
 			sourceTree = "<group>";
 		};
+		C41DFFBE2A301D2800B2F283 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				C41DFFBF2A301D4600B2F283 /* SearchViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		C4ADFDCE2A2B2AEF00DEE9B8 /* UploadTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -879,6 +893,7 @@
 				3CED80A1230124DD00B7DA8E /* Product.storyboard in Resources */,
 				3C4B10CE22292732009942B7 /* card_amex@2x.png in Resources */,
 				3CED80A62301256200B7DA8E /* Profile.storyboard in Resources */,
+				C41DFFBD2A301BBD00B2F283 /* Search.storyboard in Resources */,
 				3CD29127221135E3008B8A2D /* LaunchScreen.storyboard in Resources */,
 				3C4B10D622292732009942B7 /* card_amex.png in Resources */,
 				3C0DD87F2213533F00F5237E /* LobbyTableViewCell.xib in Resources */,
@@ -1010,6 +1025,7 @@
 				3CC706162216B34800CAD850 /* ProductTableViewCell.swift in Sources */,
 				3CEBE077222F718D0064EF82 /* StorageManager.swift in Sources */,
 				3C09F51C22114A0100C5B3E2 /* STTabBarViewController.swift in Sources */,
+				C41DFFC02A301D4600B2F283 /* SearchViewController.swift in Sources */,
 				915790D62A2B139600CFD37E /* SellerProductViewController.swift in Sources */,
 				3C7036D1222C4E0A00F6C58B /* ProductPickerController.swift in Sources */,
 				3CC7061A2216B36800CAD850 /* ProductCollectionViewCell.swift in Sources */,
