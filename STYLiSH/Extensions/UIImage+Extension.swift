@@ -61,6 +61,7 @@ enum ImageAsset: String {
     
     // Seller button
     case house_lodge_fill
+    case icons_deletion
 }
 // swiftlint:enable identifier_name
 

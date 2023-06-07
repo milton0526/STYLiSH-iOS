@@ -11,6 +11,15 @@ import Alamofire
 
 class SellerProductViewController: STBaseViewController {
 
+    lazy var indicatorView: UILabel = {
+            let label = UILabel()
+            label.text = "無上架商品"
+            label.font = .systemFont(ofSize: 16, weight: .medium)
+            label.textColor = .B2
+            label.isHidden = true
+            return label
+        }()
+    
     lazy var selectionView: SelectionView = {
         let selectionView = SelectionView()
         selectionView.dataSource = self
@@ -60,6 +69,7 @@ class SellerProductViewController: STBaseViewController {
     private var sellerProducts: [Product] = [] {
         didSet {
             DispatchQueue.main.async {
+                self.indicatorView.isHidden = !self.sellerProducts.isEmpty
                 self.collectionView.reloadData()
             }
         }
@@ -81,7 +91,7 @@ class SellerProductViewController: STBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-//        title = NSLocalizedString("賣家中心")
+        title = NSLocalizedString("我的賣場")
         setupCloseButton()
         setupConfirmView()
         setupConfirmConstraint()
@@ -101,10 +111,12 @@ class SellerProductViewController: STBaseViewController {
         confirmButton.addTarget(self, action: #selector(uploadProduct), for: .touchUpInside)
         view.addSubview(confirmView)
         confirmView.addSubview(confirmButton)
+        
+        collectionView.addSubview(indicatorView)
     }
     
     private func setupConfirmConstraint() {
-        [confirmView, confirmButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        [confirmView, confirmButton, indicatorView].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         NSLayoutConstraint.activate([
             confirmView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             confirmView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -114,7 +126,10 @@ class SellerProductViewController: STBaseViewController {
             confirmButton.topAnchor.constraint(equalTo: confirmView.topAnchor, constant: 16),
             confirmButton.leadingAnchor.constraint(equalTo: confirmView.leadingAnchor, constant: 16),
             confirmButton.trailingAnchor.constraint(equalTo: confirmView.trailingAnchor, constant: -16),
-            confirmButton.heightAnchor.constraint(equalToConstant: 56)
+            confirmButton.heightAnchor.constraint(equalToConstant: 56),
+            
+            indicatorView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            indicatorView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
         ])
         
     }
@@ -206,8 +221,6 @@ class SellerProductViewController: STBaseViewController {
         alert.addAction(cameraAction)
         
         present(alert, animated: true, completion: nil)
-//
-//        dismiss(animated: true)
     }
     
     @available(iOS 14.0, *)
@@ -362,11 +375,13 @@ extension SellerProductViewController: SelectionViewDelegate {
             collectionView.isHidden = true
             confirmView.isHidden = false
             tableView.isHidden = false
+            indicatorView.isHidden = !sellerProducts.isEmpty
         } else {
             fetchAllSellerProduct()
             collectionView.isHidden = false
             confirmView.isHidden = true
             tableView.isHidden = true
+            indicatorView.isHidden = true
         }
     }
 }
@@ -432,13 +447,91 @@ extension SellerProductViewController: UICollectionViewDataSource {
             else {
                 fatalError("Failed to dequeue cell.")
             }
-
+            
+            
+            cell.delegate = self
+            
+            cell.deletionButton()
+            
             let product = sellerProducts[indexPath.item]
 
             cell.layoutCell(image: product.mainImage, title: product.title, price: product.price)
 
             return cell
         }
+}
+
+// MARK: - Product deletion delegate
+extension SellerProductViewController: ProductCollectionViewCellDelegate {
+    func buttonPressed(from cell: ProductCollectionViewCell) {
+        
+        let alert = UIAlertController(title: "刪除商品", message: .empty, preferredStyle: .alert)
+        
+        let dismissAlert = UIAlertAction(title: "返回", style: .cancel) { _ in
+            alert.dismiss(animated: true)
+        }
+        
+        let cameraAction = UIAlertAction(title: "確定", style: .default) { _ in
+            alert.dismiss(animated: true)
+
+            
+            struct DeleteResponse: Codable {
+                let success: Bool
+            }
+            
+            guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+            let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
+            
+            guard let url = URL(string: "\(baseURL)/product") else {
+                return
+            }
+            
+            let headers: HTTPHeaders = ["Authorization": KeyChainManager.shared.token ?? ""]
+            
+            let parameters: [String: Any] = [
+                "productId": self.sellerProducts[indexPath.row].id
+            ]
+            
+            AF.request(url, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                .response { response in
+                    switch response.result {
+                    case .success(let deleteResponse):
+                        print("Product deletion successful. Success: \(deleteResponse)")
+                        self.fetchAllSellerProduct()
+                        let alert = UIAlertController(title: "商品已刪除", message: nil, preferredStyle: .alert)
+                        let confirmAction = UIAlertAction(title: "確定", style: .cancel) { _ in
+                            alert.dismiss(animated: true)
+                        }
+                        alert.addAction(confirmAction)
+                        self.present(alert, animated: true, completion: nil)
+                    case .failure(let error):
+                        print("Product deletion failed: \(error)")
+                        print(response)
+                        print(self.sellerProducts[indexPath.row].id)
+                        print("Token: \(KeyChainManager.shared.token)")
+                        if let statusCode = response.response?.statusCode {
+                            switch statusCode {
+                            case 400..<500:
+                                print("Client error: \(statusCode)")
+                                // Handle client-side errors (4xx)
+                            case 500..<600:
+                                print("Server error: \(statusCode)")
+                                // Handle server-side errors (5xx)
+                            default:
+                                print("Unexpected status code: \(statusCode)")
+                            }
+                        } else {
+                            print("Image upload failed: \(error)")
+                    }
+                }
+            }
+        }
+        
+        alert.addAction(dismissAlert)
+        alert.addAction(cameraAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UITable view dataSource
