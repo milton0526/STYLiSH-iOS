@@ -363,6 +363,7 @@ extension SellerProductViewController: SelectionViewDelegate {
             confirmView.isHidden = false
             tableView.isHidden = false
         } else {
+            fetchAllSellerProduct()
             collectionView.isHidden = false
             confirmView.isHidden = true
             tableView.isHidden = true
