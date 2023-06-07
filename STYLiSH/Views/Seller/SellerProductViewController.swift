@@ -232,8 +232,13 @@ class SellerProductViewController: STBaseViewController {
     }
     
     @objc private func uploadProduct() {
-
+        
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        feedbackGenerator.prepare()
+        feedbackGenerator.impactOccurred()
+        
         if specSectionRows != 0 && uploadBasicData != nil && uploadDetailData != nil && variants.isEmpty != true {
+            
             var responseFromServer = 0
             confirmButton.isUserInteractionEnabled = false
             confirmButton.backgroundColor = UIColor(hex: "7D7676")
