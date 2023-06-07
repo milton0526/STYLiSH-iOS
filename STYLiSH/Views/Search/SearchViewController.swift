@@ -18,7 +18,7 @@ class SearchViewController: UIViewController {
             identifier: String(describing: ProductCollectionViewCell.self),
             bundle: nil
         )
-
+//        collectionView.backgroundColor = .brown
         return collectionView
     }()
 
@@ -51,7 +51,7 @@ class SearchViewController: UIViewController {
         indicatorView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -66,7 +66,7 @@ class SearchViewController: UIViewController {
         searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
         definesPresentationContext = true
-
+//        navigationController?.navigationBar.backgroundColor = .red
     }
 
     private func fetchSearchResults(_ searchText: String) {
