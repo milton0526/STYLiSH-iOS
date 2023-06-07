@@ -20,7 +20,7 @@ class STTabBarViewController: UITabBarController {
         super.viewDidLoad()
         viewControllers = tabs.map { $0.makeViewController() }
 
-        trolleyTabBarItem = viewControllers?[2].tabBarItem
+        trolleyTabBarItem = viewControllers?[3].tabBarItem
         trolleyTabBarItem?.badgeColor = .brown
         
         orderObserver = StorageManager.shared.observe(
