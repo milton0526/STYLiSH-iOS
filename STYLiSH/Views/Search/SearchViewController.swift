@@ -26,10 +26,8 @@ class SearchViewController: UIViewController {
 
     private var filterProducts: [Product] = [] {
         didSet {
-            if !filterProducts.isEmpty {
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
             }
         }
     }
@@ -52,6 +50,7 @@ class SearchViewController: UIViewController {
         ])
 
         searchController.searchResultsUpdater = self
+        searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = NSLocalizedString("找找你有興趣的服飾")
         searchController.searchBar.delegate = self
@@ -62,7 +61,14 @@ class SearchViewController: UIViewController {
 
     private func fetchSearchResults(_ searchText: String) {
         let baseURL = Bundle.STValueForString(key: STConstant.urlKey)
-        guard let url = URL(string: baseURL + "/products/search?keyword=\(searchText)") else { return }
+
+        guard
+            let urlString = "\(baseURL)/products/search?keyword=\(searchText)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let url = URL(string: urlString)
+        else {
+            return
+        }
+
 
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard
@@ -92,6 +98,13 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
 
+    }
+}
+
+// MARK: - Search result update
+extension SearchViewController: UISearchControllerDelegate {
+    func willDismissSearchController(_ searchController: UISearchController) {
+        filterProducts.removeAll()
     }
 }
 
@@ -172,6 +185,7 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
         else {
             return
         }
+
 
         detailVC.product = filterProducts[indexPath.item]
         show(detailVC, sender: nil)
