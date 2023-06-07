@@ -69,15 +69,15 @@ class ProfileViewController: UIViewController {
     }
 
     @IBAction func signOutButtonClicked(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Are you sure want to sign out?", message: nil, preferredStyle: .alert)
-        let confirm = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+        let alert = UIAlertController(title: "登出", message: nil, preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "確定", style: .default) { [weak self] _ in
             KeyChainManager.shared.token = nil
 
             self?.tabBarController?.selectedIndex = 0
             // update UI
         }
 
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancel = UIAlertAction(title: "取消", style: .cancel)
         alert.addAction(confirm)
         alert.addAction(cancel)
         present(alert, animated: true)

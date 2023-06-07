@@ -126,31 +126,31 @@ extension STTabBarViewController: UITabBarControllerDelegate {
         }
     }
     
-    @objc func sellerMode() {
-        // 點擊時要判斷是否有 token 如果有則是跳出 Alert 不然就是跳出 FB 登入
-        if KeyChainManager.shared.token == nil {
-            if let authVC = UIStoryboard.auth.instantiateInitialViewController() {
-                authVC.modalPresentationStyle = .overCurrentContext
-                present(authVC, animated: false, completion: nil)
-            }
-        } else {
-            let alert = UIAlertController(title: "進入我的賣場", message: nil, preferredStyle: .alert)
-            
-            let cancelAction = UIAlertAction(title: "返回", style: .cancel) { _ in
-                alert.dismiss(animated: true)
-            }
-            
-            let confirmAction = UIAlertAction(title: "確定", style: .default) { [weak self]_ in
-                let sellerVC = SellerProductViewController()
-                let navVC = UINavigationController(rootViewController: sellerVC)
-                navVC.modalPresentationStyle = .fullScreen
-                self?.present(navVC, animated: true)
-            }
-            
-            alert.addAction(cancelAction)
-            alert.addAction(confirmAction)
-            
-            present(alert, animated: true, completion: nil)
-        }
-    }
+//    @objc func sellerMode() {
+//        // 點擊時要判斷是否有 token 如果有則是跳出 Alert 不然就是跳出 FB 登入
+//        if KeyChainManager.shared.token == nil {
+//            if let authVC = UIStoryboard.auth.instantiateInitialViewController() {
+//                authVC.modalPresentationStyle = .overCurrentContext
+//                present(authVC, animated: false, completion: nil)
+//            }
+//        } else {
+//            let alert = UIAlertController(title: "進入我的賣場", message: nil, preferredStyle: .alert)
+//            
+//            let cancelAction = UIAlertAction(title: "返回", style: .cancel) { _ in
+//                alert.dismiss(animated: true)
+//            }
+//            
+//            let confirmAction = UIAlertAction(title: "確定", style: .default) { [weak self]_ in
+//                let sellerVC = SellerProductViewController()
+//                let navVC = UINavigationController(rootViewController: sellerVC)
+//                navVC.modalPresentationStyle = .fullScreen
+//                self?.present(navVC, animated: true)
+//            }
+//            
+//            alert.addAction(cancelAction)
+//            alert.addAction(confirmAction)
+//            
+//            present(alert, animated: true, completion: nil)
+//        }
+//    }
 }
