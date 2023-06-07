@@ -22,34 +22,44 @@ class SearchViewController: UIViewController {
         return collectionView
     }()
 
+    lazy var indicatorView: UILabel = {
+        let label = UILabel()
+        label.text = "無相關搜尋結果"
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .B2
+        label.isHidden = false
+        return label
+    }()
+
     private let searchController = UISearchController(searchResultsController: nil)
 
-    private var filterProducts: [Product] = [] {
+    private var searchProducts: [Product] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
+                guard let self = self else { return }
+                self.indicatorView.isHidden = !self.searchProducts.isEmpty
+                self.collectionView.reloadData()
             }
         }
-    }
-
-    private var isSearchBarEmpty: Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
+        view.addSubview(indicatorView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        indicatorView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
+            indicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            indicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
 
-        searchController.searchResultsUpdater = self
         searchController.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = NSLocalizedString("找找你有興趣的服飾")
@@ -69,7 +79,6 @@ class SearchViewController: UIViewController {
             return
         }
 
-
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard
                 let self = self,
@@ -82,8 +91,8 @@ class SearchViewController: UIViewController {
 
             do {
                 let result = try JSONDecoder().decode(STSuccessParser<[Product]>.self, from: data)
-                self.filterProducts = result.data
-                print(self.filterProducts)
+                self.searchProducts = result.data
+                print(self.searchProducts)
             } catch {
                 print("Decode error.")
             }
@@ -95,16 +104,9 @@ class SearchViewController: UIViewController {
 }
 
 // MARK: - Search result update
-extension SearchViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-
-    }
-}
-
-// MARK: - Search result update
 extension SearchViewController: UISearchControllerDelegate {
     func willDismissSearchController(_ searchController: UISearchController) {
-        filterProducts.removeAll()
+        searchProducts.removeAll()
     }
 }
 
@@ -115,7 +117,7 @@ extension SearchViewController: UISearchBarDelegate {
             let searchText = searchBar.text,
             !searchText.isEmpty
         else {
-            filterProducts.removeAll()
+            searchProducts.removeAll()
             return
         }
 
@@ -126,7 +128,7 @@ extension SearchViewController: UISearchBarDelegate {
 // MARK: - Collection view data source
 extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        filterProducts.count
+        searchProducts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -137,7 +139,7 @@ extension SearchViewController: UICollectionViewDataSource {
             fatalError("Failed to dequeue cell.")
         }
 
-        let product = filterProducts[indexPath.item]
+        let product = searchProducts[indexPath.item]
         cell.layoutCell(image: product.mainImage, title: product.title, price: product.price)
         return cell
     }
@@ -186,8 +188,7 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
             return
         }
 
-
-        detailVC.product = filterProducts[indexPath.item]
+        detailVC.product = searchProducts[indexPath.item]
         show(detailVC, sender: nil)
     }
 }

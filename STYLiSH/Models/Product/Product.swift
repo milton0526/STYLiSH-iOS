@@ -16,6 +16,7 @@ struct PromotedProducts: Codable {
 struct Product: Codable {
     let id: Int
     let title: String
+    let category: String
     let description: String
     let price: Int
     let texture: String
@@ -54,6 +55,7 @@ struct Product: Codable {
         case variants
         case mainImage = "main_image"
         case images
+        case category
     }
 }
 
