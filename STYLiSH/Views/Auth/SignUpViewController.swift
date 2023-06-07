@@ -13,7 +13,11 @@ class SignUpViewController: STBaseViewController {
 
     @IBOutlet weak var nameTextField: STOrderUserInputTextField!
     @IBOutlet weak var emailTextField: STOrderUserInputTextField!
-    @IBOutlet weak var passwordTextField: STOrderUserInputTextField!
+    @IBOutlet weak var passwordTextField: STOrderUserInputTextField! {
+        didSet {
+            passwordTextField.isSecureTextEntry = true
+        }
+    }
 
     private let userProvider = UserProvider()
 

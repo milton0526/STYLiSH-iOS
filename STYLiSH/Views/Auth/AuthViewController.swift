@@ -15,7 +15,11 @@ class AuthViewController: STBaseViewController {
     private let userProvider = UserProvider()
 
     @IBOutlet weak var emailTextField: STOrderUserInputTextField!
-    @IBOutlet weak var passwordTextField: STOrderUserInputTextField!
+    @IBOutlet weak var passwordTextField: STOrderUserInputTextField! {
+        didSet {
+            passwordTextField.isSecureTextEntry = true
+        }
+    }
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
 
