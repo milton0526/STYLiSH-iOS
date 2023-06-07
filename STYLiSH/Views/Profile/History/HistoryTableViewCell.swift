@@ -12,7 +12,8 @@ class HistoryTableViewCell: UITableViewCell {
 
     lazy var productImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
 

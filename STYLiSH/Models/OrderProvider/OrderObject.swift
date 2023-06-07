@@ -48,7 +48,7 @@ struct Order: Encodable {
             }
             let orderObject = OrderListObject(
                 id: String(object.id),
-                name: name, price:
+                title: name, price:
                 Int(object.price),
                 color: color,
                 size: size,
@@ -139,7 +139,7 @@ enum Payment: String, Codable {
 
 struct OrderListObject: Codable {
     let id: String
-    let name: String
+    let title: String
     let price: Int
     let color: Color
     let size: String

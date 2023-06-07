@@ -40,6 +40,11 @@ class ProfileViewController: UIViewController {
         fetchData()
         setSellerIcon()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+    }
 
     // MARK: - Action
     private func fetchData() {

@@ -29,7 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
 
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-
+        
+        window?.tintColor = UIColor(hex: "91683C")
+        
         return true
     }
 
