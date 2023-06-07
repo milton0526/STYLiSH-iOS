@@ -16,6 +16,7 @@ class HistoryViewController: UIViewController {
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
         tableView.register(HistoryHeaderView.self, forHeaderFooterViewReuseIdentifier: HistoryHeaderView.identifier)
         tableView.register(HistoryFooterView.self, forHeaderFooterViewReuseIdentifier: HistoryFooterView.identifier)

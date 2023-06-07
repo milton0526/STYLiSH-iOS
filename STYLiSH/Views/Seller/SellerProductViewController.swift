@@ -605,9 +605,11 @@ extension SellerProductViewController: UITableViewDataSource {
                 basicCell.uploadImageView2.image = UIImage.asset(.Image_Placeholder)
                 basicCell.productTitleTextField.text = ""
                 basicCell.productDescriptionTextField.text = ""
+                basicCell.selectionStyle = .none
                 return basicCell
             }
             detailCell.delegate = self
+            detailCell.selectionStyle = .none
             return detailCell
             
         case 1:
